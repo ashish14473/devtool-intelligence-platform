@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1005",
+    "fields": {
+      "summary": "Developer cannot see SonarQube project after being added to the team",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Ananya Singh",
+        "emailAddress": "ananya.singh@company.com"
+      },
+      "labels": ["sonarqube", "access", "permissions"],
+      "created": "2025-11-01T09:00:00.000+0000",
+      "resolutiondate": "2025-11-01T15:30:00.000+0000",
+      "description": "A new developer Rohan Gupta joined our team last week and needs access to our SonarQube project inventory-service. I added him to the project via Administration > Project Settings > Permissions and gave him Browse permission. However when Rohan logs in he cannot see the inventory-service project in his dashboard at all. He can see other projects he was previously a member of from his previous team. Our SonarQube instance uses LDAP authentication."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20040",
+        "author": {
+          "displayName": "Ananya Singh",
+          "emailAddress": "ananya.singh@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I double checked and Rohan's account is showing as active in SonarQube. His username in SonarQube is rohan.gupta and I confirmed it matches his LDAP login. I gave him Browse permission on the project but he still cannot see it after logging out and back in." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-01T09:30:00.000+0000",
+        "updated": "2025-11-01T09:30:00.000+0000"
+      },
+      {
+        "id": "20041",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Ananya, the issue is likely that the inventory-service project has private visibility. When a project is set to private, Browse permission at the project level is required AND the user must not be blocked by a global permission template that overrides project-level settings. Can you check under Administration > Projects > Management and look at what Permission Template is applied to inventory-service? There may be a template that restricts visibility to a specific group." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-01T10:45:00.000+0000",
+        "updated": "2025-11-01T10:45:00.000+0000"
+      },
+      {
+        "id": "20042",
+        "author": {
+          "displayName": "Ananya Singh",
+          "emailAddress": "ananya.singh@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Found it. The inventory-service had the finance-team-only permission template applied which restricts Browse to the finance-ldap-group. Rohan is in the engineering group. I added Rohan directly to the project-level permission overriding the template. He can now see the project. Should we change the template or keep the direct permission?" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-01T14:00:00.000+0000",
+        "updated": "2025-11-01T14:00:00.000+0000"
+      },
+      {
+        "id": "20043",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Keep the direct permission for now and raise a separate ticket to review the permission template assignment. The direct permission is fine as a fix. Closing this ticket." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-01T15:25:00.000+0000",
+        "updated": "2025-11-01T15:25:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

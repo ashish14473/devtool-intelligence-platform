@@ -1,0 +1,90 @@
+{
+  "issue": {
+    "key": "SQ-1003",
+    "fields": {
+      "summary": "Code coverage dropping to 0% on SonarQube despite all unit tests passing locally",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Sneha Kulkarni",
+        "emailAddress": "sneha.kulkarni@company.com"
+      },
+      "reporter": {
+        "displayName": "Vikram Nair",
+        "emailAddress": "vikram.nair@company.com"
+      },
+      "labels": ["sonarqube", "coverage", "jacoco"],
+      "created": "2025-10-18T08:30:00.000+0000",
+      "resolutiondate": "2025-10-20T11:00:00.000+0000",
+      "description": "Our SonarQube dashboard is showing 0% code coverage for our microservice even though all 230 unit tests pass successfully both locally and in our CI pipeline. We are using JaCoCo for coverage reporting. The coverage was showing correctly at 78% until last sprint. We changed our Maven build structure last week to separate the test module into its own submodule to make test execution faster."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20020",
+        "author": {
+          "displayName": "Vikram Nair",
+          "emailAddress": "vikram.nair@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I can confirm the jacoco.xml report is being generated in the target/site/jacoco directory of the test submodule. The report looks correct with full coverage data. But SonarQube is not picking it up." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-18T09:00:00.000+0000",
+        "updated": "2025-10-18T09:00:00.000+0000"
+      },
+      {
+        "id": "20021",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Hi Vikram, the problem is that when you moved tests to a separate submodule, the JaCoCo report is now generated in the test submodule's target directory, but SonarQube is looking for it relative to each module's own directory. You need to configure the sonar.coverage.jacoco.xmlReportPaths property to point to the correct path. Add this to your sonar-project.properties: sonar.coverage.jacoco.xmlReportPaths=../test-module/target/site/jacoco/jacoco.xml" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-19T10:30:00.000+0000",
+        "updated": "2025-10-19T10:30:00.000+0000"
+      },
+      {
+        "id": "20022",
+        "author": {
+          "displayName": "Vikram Nair",
+          "emailAddress": "vikram.nair@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "That fixed it. Coverage is now showing 81% which is actually higher than before because we added more tests. The key was pointing sonar.coverage.jacoco.xmlReportPaths to the correct submodule path. Thanks Sneha." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-20T10:55:00.000+0000",
+        "updated": "2025-10-20T10:55:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

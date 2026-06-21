@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "GL-2003",
+    "fields": {
+      "summary": "Support needed to migrate existing Jenkins pipeline to GitLab CI for order-service",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Kavitha Rajan",
+        "emailAddress": "kavitha.rajan@company.com"
+      },
+      "labels": ["gitlab", "migration", "jenkins", "ci-cd"],
+      "created": "2025-10-25T09:00:00.000+0000",
+      "resolutiondate": "2025-10-30T14:00:00.000+0000",
+      "description": "Our team is migrating the order-service from Jenkins to GitLab CI as part of the organisation wide CI/CD platform consolidation. Our existing Jenkins pipeline has 6 stages: checkout, build, unit test, integration test, docker build and push, and deploy to staging. We use Maven for building, JaCoCo for coverage, Docker for containerisation, and we deploy to Kubernetes via Helm. We have not used GitLab CI before and need guidance on how to translate our Jenkinsfile into a .gitlab-ci.yml, how to handle secrets, and how to set up environment-specific deployments."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "30020",
+        "author": {
+          "displayName": "Kavitha Rajan",
+          "emailAddress": "kavitha.rajan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Our Jenkins pipeline uses a shared library for the Kubernetes deployment steps. We also store Docker registry credentials and Kubernetes kubeconfig as Jenkins credentials. We want to understand the equivalent mechanisms in GitLab CI for both of these." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-25T09:30:00.000+0000",
+        "updated": "2025-10-25T09:30:00.000+0000"
+      },
+      {
+        "id": "30021",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Kavitha, here is the mapping from Jenkins to GitLab CI for your pipeline. Jenkins stages map directly to GitLab CI stages defined in the stages block. For secrets, Jenkins credentials map to GitLab CI/CD Variables — add them under Settings > CI/CD > Variables and mark sensitive ones as masked and protected. Docker registry credentials should be stored as DOCKER_USERNAME and DOCKER_PASSWORD variables. For Kubernetes, store the kubeconfig content as a file-type variable KUBECONFIG. For your Jenkins shared library, the equivalent in GitLab is either a local include from a templates directory or a remote include from a separate GitLab project using include: project syntax." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-26T10:00:00.000+0000",
+        "updated": "2025-10-26T10:00:00.000+0000"
+      },
+      {
+        "id": "30022",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "For environment-specific deployments, use GitLab Environments and the environment keyword in your deploy job. Define staging and production as separate jobs with different environment names and use only: variables or rules: to control which branch triggers which deployment. Protected environments can restrict who can trigger production deployments, equivalent to Jenkins build authorization." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-26T10:20:00.000+0000",
+        "updated": "2025-10-26T10:20:00.000+0000"
+      },
+      {
+        "id": "30023",
+        "author": {
+          "displayName": "Kavitha Rajan",
+          "emailAddress": "kavitha.rajan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "We have successfully migrated the order-service pipeline to GitLab CI. All 6 stages are running correctly, secrets are configured as GitLab CI variables, and the staging deployment is working via Helm. The pipeline runs in about 8 minutes which is faster than our previous Jenkins pipeline at 12 minutes. Closing this ticket." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-30T13:50:00.000+0000",
+        "updated": "2025-10-30T13:50:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "issue": {
+    "key": "GL-2004",
+    "fields": {
+      "summary": "Guidance needed for migrating 40 projects from self-hosted GitLab 15.x to GitLab SaaS",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Sunita Bhatt",
+        "emailAddress": "sunita.bhatt@company.com"
+      },
+      "labels": ["gitlab", "migration", "self-hosted", "saas"],
+      "created": "2025-11-03T10:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "We are decommissioning our self-hosted GitLab 15.11 instance and migrating all 40 projects to GitLab SaaS on the company's enterprise account. The projects include repositories, their full commit history, merge requests, issues, CI/CD pipelines, wikis, and group-level variables. Some projects have large repositories up to 8GB with over 5 years of history. We want to understand the recommended migration approach, what data is and is not migrated, expected downtime, and any risks specific to our setup."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "30030",
+        "author": {
+          "displayName": "Sunita Bhatt",
+          "emailAddress": "sunita.bhatt@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "We have a mix of project types: standard application repositories, infrastructure as code repos using Terraform, and a few projects with GitLab Pages configured. Some projects also have project-level webhooks pointing to our internal systems. We want to know if webhooks, pipeline schedules and project access tokens are migrated automatically." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-03T10:30:00.000+0000",
+        "updated": "2025-11-03T10:30:00.000+0000"
+      },
+      {
+        "id": "30031",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Sunita, the recommended approach for your scale is GitLab's direct transfer migration feature available in GitLab 15.8 and above. This migrates repositories, merge requests, issues, labels, milestones, wikis, and pipeline history. What is NOT automatically migrated: project access tokens (must be recreated), webhooks (must be reconfigured), pipeline schedules (must be recreated manually), and GitLab Pages domains if you use custom domains. Group-level CI/CD variables are migrated but project-level variables are not." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-04T09:15:00.000+0000",
+        "updated": "2025-11-04T09:15:00.000+0000"
+      },
+      {
+        "id": "30032",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "For large repositories up to 8GB: the direct transfer handles them but expect each large repo to take 20 to 40 minutes. Do not run more than 5 large repo migrations in parallel to avoid hitting GitLab SaaS rate limits. Recommended sequence: migrate small projects first to validate the process, then tackle large repos in batches of 3 to 5. Total estimated migration time for 40 projects: 6 to 8 hours in batches. Downtime per project: near zero as you can keep the self-hosted instance running until the SaaS migration is validated." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-04T09:35:00.000+0000",
+        "updated": "2025-11-04T09:35:00.000+0000"
+      },
+      {
+        "id": "30033",
+        "author": {
+          "displayName": "Sunita Bhatt",
+          "emailAddress": "sunita.bhatt@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "We have migrated 15 out of 40 projects so far using direct transfer. The process is working well. We are documenting all project access tokens and webhooks to recreate after migration. One issue encountered: two projects with LFS objects took much longer than expected — around 90 minutes each. Are there any optimisations for LFS heavy repositories?" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-10T11:00:00.000+0000",
+        "updated": "2025-11-10T11:00:00.000+0000"
+      },
+      {
+        "id": "30034",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "For LFS-heavy repositories the direct transfer re-uploads all LFS objects to GitLab SaaS storage which is the bottleneck. No way around this in direct transfer. Consider migrating LFS repos during off-peak hours and schedule them for overnight runs. If LFS objects are large binary assets that are no longer actively changing, you can prune old LFS versions before migration to reduce transfer size. Keeping ticket open until all 40 projects are migrated." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-10T13:00:00.000+0000",
+        "updated": "2025-11-10T13:00:00.000+0000"
+      }
+    ],
+    "total": 5
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "GL-2005",
+    "fields": {
+      "summary": "GitLab Duo code suggestions not appearing in VS Code after enabling on group",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Farhan Sheikh",
+        "emailAddress": "farhan.sheikh@company.com"
+      },
+      "labels": ["gitlab", "gitlab-duo", "ai", "vscode"],
+      "created": "2025-11-12T09:00:00.000+0000",
+      "resolutiondate": "2025-11-13T16:00:00.000+0000",
+      "description": "We recently purchased GitLab Duo Pro seats for our engineering group. The group owner has enabled GitLab Duo features under the group settings. I have installed the GitLab Workflow extension in VS Code version 1.94 and signed in with my GitLab account. However code suggestions are not appearing while I type in any file. The extension shows as connected and my account is shown as authenticated. Other developers on the team are also not seeing suggestions. We are on GitLab SaaS Ultimate tier."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "30040",
+        "author": {
+          "displayName": "Farhan Sheikh",
+          "emailAddress": "farhan.sheikh@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I checked the GitLab Workflow extension settings in VS Code and the GitLab Duo Code Suggestions toggle is turned on. The extension version is 3.74.0. I can see the GitLab icon in the VS Code status bar showing as connected. When I hover over it it shows my username and the correct GitLab instance URL." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-12T09:30:00.000+0000",
+        "updated": "2025-11-12T09:30:00.000+0000"
+      },
+      {
+        "id": "30041",
+        "author": {
+          "displayName": "Jira Automation",
+          "emailAddress": "automation@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Ticket assigned to GitLab platform team." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-12T09:31:00.000+0000",
+        "updated": "2025-11-12T09:31:00.000+0000"
+      },
+      {
+        "id": "30042",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Farhan, there are two things to check. First, GitLab Duo Pro seats must be explicitly assigned to individual users — enabling it at group level alone is not enough. Go to your group > Settings > GitLab Duo > Manage seats and confirm that your user account and the other affected developers are listed as assigned seat holders. Second, after seat assignment users must sign out and sign back in to the GitLab Workflow extension in VS Code to refresh the entitlement token. Can you confirm whether seats have been individually assigned?" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-12T11:00:00.000+0000",
+        "updated": "2025-11-12T11:00:00.000+0000"
+      },
+      {
+        "id": "30043",
+        "author": {
+          "displayName": "Farhan Sheikh",
+          "emailAddress": "farhan.sheikh@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "That was exactly the issue. The group owner had enabled Duo at group level but had not assigned individual seats. After assigning seats to all 12 developers in our team and having everyone sign out and back in to the VS Code extension, code suggestions are now working for everyone. The inline suggestions appear correctly as we type. Thank you for the quick diagnosis Aditya." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-13T15:50:00.000+0000",
+        "updated": "2025-11-13T15:50:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

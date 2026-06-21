@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1008",
+    "fields": {
+      "summary": "SonarQube analysis taking 45 minutes on monolith codebase blocking CI pipeline",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Kiran Reddy",
+        "emailAddress": "kiran.reddy@company.com"
+      },
+      "labels": ["sonarqube", "performance", "analysis-time"],
+      "created": "2025-11-12T14:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "SonarQube analysis for our legacy monolith order-management-system is taking between 40 to 50 minutes to complete. This is blocking our CI pipeline and developers are waiting a very long time for feedback. The codebase has approximately 800,000 lines of Java code across 3,200 classes. We are running the SonarQube scanner on the Jenkins agent itself. The Jenkins agent has 4 CPU cores and 8GB RAM. Analysis was taking around 20 minutes 6 months ago but has been getting slower as the codebase grows. We need to get this under 15 minutes."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20070",
+        "author": {
+          "displayName": "Kiran Reddy",
+          "emailAddress": "kiran.reddy@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Looking at the scanner logs the majority of time is being spent in the Java sensor phase. The scanner JVM is using the default heap size. I can see a lot of GC activity in the logs which might be causing slowdown." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-12T14:30:00.000+0000",
+        "updated": "2025-11-12T14:30:00.000+0000"
+      },
+      {
+        "id": "20071",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Kiran, there are several things we can try. First, increase the scanner heap size by setting SONAR_SCANNER_OPTS=-Xmx4096m in your Jenkins environment. This should reduce GC pressure significantly for a codebase this size. Second, check if you have sonar.java.binaries configured correctly — pointing to compiled classes rather than source only speeds up the Java sensor. Third, consider enabling incremental analysis if you are on SonarQube Developer Edition or above which only analyses changed files on feature branches." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-13T09:30:00.000+0000",
+        "updated": "2025-11-13T09:30:00.000+0000"
+      },
+      {
+        "id": "20072",
+        "author": {
+          "displayName": "Kiran Reddy",
+          "emailAddress": "kiran.reddy@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Increasing heap to 4GB brought analysis down to 28 minutes. Still above our 15-minute target. We are on Community Edition so incremental analysis is not available. What are the other options? Can we parallelise somehow?" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-14T10:00:00.000+0000",
+        "updated": "2025-11-14T10:00:00.000+0000"
+      },
+      {
+        "id": "20073",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Good progress. For further reduction: look at sonar.exclusions to skip generated code, third-party libraries under vendor directories, and any auto-generated protobuf or JAXB classes. Also check if you can run the full analysis only on main branch merges and a lighter analysis on feature branches by excluding certain rules. I will investigate whether upgrading to Developer Edition for branch analysis is worth it for your team — will follow up." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-14T11:30:00.000+0000",
+        "updated": "2025-11-14T11:30:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

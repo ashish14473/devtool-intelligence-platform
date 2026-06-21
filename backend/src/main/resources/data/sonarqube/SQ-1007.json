@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1007",
+    "fields": {
+      "summary": "How to onboard new Node.js microservice to SonarQube with existing Jenkins pipeline",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Sneha Kulkarni",
+        "emailAddress": "sneha.kulkarni@company.com"
+      },
+      "reporter": {
+        "displayName": "Meera Iyer",
+        "emailAddress": "meera.iyer@company.com"
+      },
+      "labels": ["sonarqube", "onboarding", "nodejs", "jenkins"],
+      "created": "2025-11-08T10:00:00.000+0000",
+      "resolutiondate": "2025-11-10T12:00:00.000+0000",
+      "description": "Our team is building a new Node.js microservice notification-service and we want to integrate it with SonarQube from the start. We already have a Jenkins pipeline for build and deployment. We need guidance on what steps are required to set up SonarQube analysis for a Node.js project, what files we need to add to our repository, and how to connect it to our existing Jenkins pipeline. We also want to know how to set up the quality gate so that the pipeline fails if coverage drops below 70%."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20060",
+        "author": {
+          "displayName": "Meera Iyer",
+          "emailAddress": "meera.iyer@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "We are using Jest for unit testing and already generating lcov coverage reports in the coverage directory. Our Jenkins version is 2.387. We do not have sonar-project.properties in the repo yet." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-08T10:30:00.000+0000",
+        "updated": "2025-11-08T10:30:00.000+0000"
+      },
+      {
+        "id": "20061",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Hi Meera, here are the steps. First, create a sonar-project.properties file in your repo root with these properties: sonar.projectKey=notification-service, sonar.projectName=Notification Service, sonar.sources=src, sonar.tests=src, sonar.test.inclusions=**/*.test.js, sonar.javascript.lcov.reportPaths=coverage/lcov.info. Second, in Jenkins add the SonarQube Scanner build step after your Jest test step. Use the sonarqube-server credential already configured in Jenkins global settings. Third, add a Quality Gate check step after the scanner using the waitForQualityGate() function in your Jenkinsfile. I will share a sample Jenkinsfile snippet." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-09T09:00:00.000+0000",
+        "updated": "2025-11-09T09:00:00.000+0000"
+      },
+      {
+        "id": "20062",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "For the quality gate with 70% coverage threshold: go to SonarQube > Quality Gates > Create a new gate, add condition Coverage is less than 70%, then assign it to your project under Project Settings > Quality Gate. The waitForQualityGate() step in Jenkins will then fail the pipeline automatically if this condition is not met." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-09T09:15:00.000+0000",
+        "updated": "2025-11-09T09:15:00.000+0000"
+      },
+      {
+        "id": "20063",
+        "author": {
+          "displayName": "Meera Iyer",
+          "emailAddress": "meera.iyer@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Everything is working. The notification-service project is now visible in SonarQube showing 73% coverage and 0 critical issues. Quality gate is configured and the pipeline correctly fails when we deliberately dropped coverage in a test branch. Thank you for the detailed steps Sneha." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-10T11:50:00.000+0000",
+        "updated": "2025-11-10T11:50:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

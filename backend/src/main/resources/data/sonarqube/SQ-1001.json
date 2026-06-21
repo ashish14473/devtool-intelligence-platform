@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1001",
+    "fields": {
+      "summary": "SonarQube scanner failing on Maven multi-module project",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Priya Sharma",
+        "emailAddress": "priya.sharma@company.com"
+      },
+      "labels": ["sonarqube", "scanner", "maven"],
+      "created": "2025-10-05T09:15:00.000+0000",
+      "resolutiondate": "2025-10-07T14:30:00.000+0000",
+      "description": "Our Maven multi-module project started failing during SonarQube analysis after we upgraded from SonarQube 9.6 to 10.2. The scanner exits with a NullPointerException during the analysis phase. The build itself succeeds fine, only the sonar:sonar goal fails. We are running sonar-maven-plugin 3.9.1 and Java 17. The error appears consistently across all our CI pipeline runs since the upgrade."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20001",
+        "author": {
+          "displayName": "Priya Sharma",
+          "emailAddress": "priya.sharma@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Adding the full stack trace here. The error is: java.lang.NullPointerException at org.sonar.scanner.report.ComponentsPublisher.java:89. This started happening right after the version upgrade on Friday." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-05T09:45:00.000+0000",
+        "updated": "2025-10-05T09:45:00.000+0000"
+      },
+      {
+        "id": "20002",
+        "author": {
+          "displayName": "Jira Automation",
+          "emailAddress": "automation@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Ticket automatically assigned to SonarQube support team based on label." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-05T09:46:00.000+0000",
+        "updated": "2025-10-05T09:46:00.000+0000"
+      },
+      {
+        "id": "20003",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Hi Priya, I can see the issue. The sonar-maven-plugin 3.9.1 is not compatible with SonarQube 10.2. You need to upgrade the plugin to 3.10.0 or above. Please update your pom.xml to use sonar-maven-plugin version 3.10.0 and retry the pipeline." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-06T10:15:00.000+0000",
+        "updated": "2025-10-06T10:15:00.000+0000"
+      },
+      {
+        "id": "20004",
+        "author": {
+          "displayName": "Priya Sharma",
+          "emailAddress": "priya.sharma@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Upgraded to sonar-maven-plugin 3.10.0 and the scanner is working fine now. All modules are being analysed correctly. Closing this ticket. Thank you Rahul." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-07T14:25:00.000+0000",
+        "updated": "2025-10-07T14:25:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

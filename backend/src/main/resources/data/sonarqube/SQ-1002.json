@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1002",
+    "fields": {
+      "summary": "SonarQube scanner not analysing Kotlin source files in Spring Boot project",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Amit Joshi",
+        "emailAddress": "amit.joshi@company.com"
+      },
+      "labels": ["sonarqube", "scanner", "kotlin"],
+      "created": "2025-10-12T11:00:00.000+0000",
+      "resolutiondate": "2025-10-14T16:00:00.000+0000",
+      "description": "We recently migrated our Spring Boot service from Java to Kotlin. The SonarQube scanner completes without errors but the analysis dashboard shows 0 lines of code and no issues detected. It appears the scanner is completely ignoring the .kt files. We have sonar.language set to java in our sonar-project.properties which we copied from our old Java project. Our project has both Java and Kotlin files currently during migration."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20010",
+        "author": {
+          "displayName": "Amit Joshi",
+          "emailAddress": "amit.joshi@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Attaching our sonar-project.properties file. We have sonar.language=java which I think is the issue but not sure what the correct value should be for a mixed Java and Kotlin project." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-12T11:30:00.000+0000",
+        "updated": "2025-10-12T11:30:00.000+0000"
+      },
+      {
+        "id": "20011",
+        "author": {
+          "displayName": "Jenkins CI",
+          "emailAddress": "jenkins@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Build #881 completed. SonarQube analysis finished with 0 issues. See full report at https://sonar.company.com/dashboard?id=payment-service" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-12T12:00:00.000+0000",
+        "updated": "2025-10-12T12:00:00.000+0000"
+      },
+      {
+        "id": "20012",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "The issue is the sonar.language=java property. For a mixed Java and Kotlin project you should remove the sonar.language property entirely and let SonarQube auto-detect the languages. SonarQube 9+ supports multi-language analysis by default. Also make sure you have the Kotlin plugin installed on the SonarQube server — go to Administration > Marketplace and check." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-13T09:20:00.000+0000",
+        "updated": "2025-10-13T09:20:00.000+0000"
+      },
+      {
+        "id": "20013",
+        "author": {
+          "displayName": "Amit Joshi",
+          "emailAddress": "amit.joshi@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Removed the sonar.language property and confirmed the Kotlin plugin was already installed. The scanner is now correctly picking up both Java and Kotlin files. Dashboard showing 4200 lines of code as expected. Marking as resolved." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-14T15:50:00.000+0000",
+        "updated": "2025-10-14T15:50:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

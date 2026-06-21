@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: devtools-intelligence-platform
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devtools_intelligence
+    username: devtools
+    password: devtools_secret
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+# ── OpenAI ────────────────────────────────────────────────────────────────────
+openai:
+  api-key: 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
+  base-url: https://api.openai.com/v1
+  chat-model: gpt-4o-mini
+  embedding-model: text-embedding-3-small
+  embedding-dimensions: 1536
+
+# ── Jira ──────────────────────────────────────────────────────────────────────
+# Paste your new Jira API token below after revoking the old one.
+# Generate at: https://id.atlassian.com/manage-api-tokens
+jira:
+  base-url: https://aitian888.atlassian.net
+  email: aitian.888@gmail.com
+  api-token: ATATT3xFfGF0kcmyuW2NSxeA2QER_8dVLMFXrnLM2-0r6iQwT99_d75lXVzHf9PPpoaPMfWsDXZIK0-Lkqi6io6Jyuq_AfFoJZ4o5PhBuZ0C4HsUFZ1HawOtMVZWOFRFTu9oe5odX5ZEC6Ph4B2vsJFK7Piq_Heon741RFOxnzJL11dVDhmth0E=4E5A7FCB
+  project-key: SCRUM
+  similarity-threshold: 0.75
+
+# ── Ingestion ──────────────────────────────────────────────────────────────────
+ingestion:
+  csv-path: classpath:data/jira_tickets_sample.csv
+  json-data-path: classpath:data/sonarqube
+
+# ── CORS ──────────────────────────────────────────────────────────────────────
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:3000
+
+logging:
+  level:
+    com.devtools.intelligence: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN

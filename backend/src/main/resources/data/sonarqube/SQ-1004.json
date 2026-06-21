@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1004",
+    "fields": {
+      "summary": "Integration test files being included in code coverage metrics despite exclusion config",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Sneha Kulkarni",
+        "emailAddress": "sneha.kulkarni@company.com"
+      },
+      "reporter": {
+        "displayName": "Deepak Verma",
+        "emailAddress": "deepak.verma@company.com"
+      },
+      "labels": ["sonarqube", "coverage", "exclusions"],
+      "created": "2025-10-22T10:00:00.000+0000",
+      "resolutiondate": "2025-10-24T13:00:00.000+0000",
+      "description": "We have integration tests under src/it/java that we want to exclude from the SonarQube code coverage calculation because they inflate our numbers artificially. We added sonar.exclusions=**/it/java/** to our configuration but the integration test files are still appearing in the coverage report. Our quality gate is set at 80% unit test coverage and the integration tests are pushing us above this threshold making the gate meaningless."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20030",
+        "author": {
+          "displayName": "Deepak Verma",
+          "emailAddress": "deepak.verma@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I also tried sonar.test.exclusions=**/it/java/** but neither property seems to work. The integration test classes are still showing up in the analysis." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-22T10:30:00.000+0000",
+        "updated": "2025-10-22T10:30:00.000+0000"
+      },
+      {
+        "id": "20031",
+        "author": {
+          "displayName": "Jira Automation",
+          "emailAddress": "automation@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Status changed to In Progress." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-22T11:00:00.000+0000",
+        "updated": "2025-10-22T11:00:00.000+0000"
+      },
+      {
+        "id": "20032",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Deepak, there are two separate properties here that are often confused. sonar.exclusions excludes files from the analysis entirely — no issues will be raised on them. sonar.coverage.exclusions excludes files specifically from coverage calculation while still analysing them for bugs and code smells. You need to use sonar.coverage.exclusions=**/it/java/** for your use case. Also make sure the path pattern matches your actual directory structure." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-23T09:15:00.000+0000",
+        "updated": "2025-10-23T09:15:00.000+0000"
+      },
+      {
+        "id": "20033",
+        "author": {
+          "displayName": "Deepak Verma",
+          "emailAddress": "deepak.verma@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "sonar.coverage.exclusions did the trick. Unit test coverage is now reported at 76% which accurately reflects just our unit tests. Quality gate is working as intended now. The distinction between sonar.exclusions and sonar.coverage.exclusions is not obvious from the documentation." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-24T12:50:00.000+0000",
+        "updated": "2025-10-24T12:50:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

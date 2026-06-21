@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "GL-2001",
+    "fields": {
+      "summary": "GitLab CI pipeline stuck in pending state for over 2 hours on shared runner",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Nisha Patel",
+        "emailAddress": "nisha.patel@company.com"
+      },
+      "labels": ["gitlab", "pipeline", "runner"],
+      "created": "2025-10-08T10:00:00.000+0000",
+      "resolutiondate": "2025-10-08T15:30:00.000+0000",
+      "description": "Our GitLab CI pipeline for the user-profile-service has been stuck in a pending state for over 2 hours. The pipeline was triggered by a merge request push. Other teams are reporting their pipelines are running fine. This started happening after our DevOps team performed runner maintenance yesterday evening. We have 3 shared runners configured for our group. The job logs show nothing as the job never gets picked up by any runner."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "30001",
+        "author": {
+          "displayName": "Nisha Patel",
+          "emailAddress": "nisha.patel@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I checked our .gitlab-ci.yml and we have a tags section specifying docker as the runner tag. This worked fine before the maintenance window. I can see in the GitLab UI that the job is waiting for a runner with the docker tag." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-08T10:30:00.000+0000",
+        "updated": "2025-10-08T10:30:00.000+0000"
+      },
+      {
+        "id": "30002",
+        "author": {
+          "displayName": "GitLab Bot",
+          "emailAddress": "gitlab-bot@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Pipeline #44821 has been pending for 120 minutes. Automatic escalation triggered." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-08T12:00:00.000+0000",
+        "updated": "2025-10-08T12:00:00.000+0000"
+      },
+      {
+        "id": "30003",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Found the root cause. During yesterday's runner maintenance, the docker tag was accidentally removed from all 3 shared runners. The runners are active and healthy but they no longer match the docker tag your pipeline is requesting. I have re-added the docker tag to all 3 runners under Settings > CI/CD > Runners. Your pipeline should now be picked up." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-08T13:45:00.000+0000",
+        "updated": "2025-10-08T13:45:00.000+0000"
+      },
+      {
+        "id": "30004",
+        "author": {
+          "displayName": "Nisha Patel",
+          "emailAddress": "nisha.patel@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Pipeline is running now and completed successfully. All stages passed. The root cause was the missing docker tag on the shared runners after maintenance. Thank you Aditya." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-08T15:25:00.000+0000",
+        "updated": "2025-10-08T15:25:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "GL-2002",
+    "fields": {
+      "summary": "Environment variables defined in parent pipeline not available in triggered downstream pipeline",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Rohan Das",
+        "emailAddress": "rohan.das@company.com"
+      },
+      "labels": ["gitlab", "pipeline", "variables", "multi-project"],
+      "created": "2025-10-20T09:00:00.000+0000",
+      "resolutiondate": "2025-10-22T11:00:00.000+0000",
+      "description": "We have a parent pipeline in our platform-orchestrator project that triggers a downstream pipeline in our deployment-service project using the trigger keyword. We define several environment variables in the parent pipeline including DEPLOY_ENV, IMAGE_TAG, and RELEASE_VERSION. These variables are available throughout the parent pipeline but when the downstream deployment pipeline runs it cannot access them and the deployment fails with undefined variable errors. We are using GitLab 16.4."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "30010",
+        "author": {
+          "displayName": "Rohan Das",
+          "emailAddress": "rohan.das@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Here is the relevant section of our .gitlab-ci.yml. We are using trigger: project: company/deployment-service and the variables are defined at the top level of the parent pipeline. We assumed variables defined at pipeline level would automatically be passed downstream." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-20T09:30:00.000+0000",
+        "updated": "2025-10-20T09:30:00.000+0000"
+      },
+      {
+        "id": "30011",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Rohan, variables from a parent pipeline are not automatically forwarded to downstream triggered pipelines in GitLab. You need to explicitly pass them using the variables keyword inside the trigger job definition. Update your trigger job to include: variables: DEPLOY_ENV: $DEPLOY_ENV, IMAGE_TAG: $IMAGE_TAG, RELEASE_VERSION: $RELEASE_VERSION. This explicitly maps the parent pipeline variables into the downstream pipeline context." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-21T10:00:00.000+0000",
+        "updated": "2025-10-21T10:00:00.000+0000"
+      },
+      {
+        "id": "30012",
+        "author": {
+          "displayName": "Jira Automation",
+          "emailAddress": "automation@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Status changed to In Progress." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-21T10:01:00.000+0000",
+        "updated": "2025-10-21T10:01:00.000+0000"
+      },
+      {
+        "id": "30013",
+        "author": {
+          "displayName": "Rohan Das",
+          "emailAddress": "rohan.das@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Adding the explicit variables mapping inside the trigger job fixed it. The downstream pipeline now correctly receives DEPLOY_ENV, IMAGE_TAG and RELEASE_VERSION. Deployment completed successfully. The GitLab documentation on this was not clear that variables are not inherited automatically — worth flagging this to other teams who use multi-project pipelines." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-10-22T10:55:00.000+0000",
+        "updated": "2025-10-22T10:55:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

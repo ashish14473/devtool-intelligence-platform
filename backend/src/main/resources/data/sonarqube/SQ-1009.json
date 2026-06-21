@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1009",
+    "fields": {
+      "summary": "Request to delete deprecated payment-gateway-v1 project from SonarQube",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Pooja Agarwal",
+        "emailAddress": "pooja.agarwal@company.com"
+      },
+      "labels": ["sonarqube", "project-deletion", "housekeeping"],
+      "created": "2025-11-15T11:00:00.000+0000",
+      "resolutiondate": "2025-11-16T10:00:00.000+0000",
+      "description": "We have decommissioned the payment-gateway-v1 service and the repository has been archived in GitHub. The project is still appearing in SonarQube and contributing to our portfolio metrics. We want the project deleted from SonarQube including all historical analysis data. The project key is payment-gateway-v1. The replacement service payment-gateway-v2 has been running in production for 3 months and is correctly onboarded to SonarQube already. Please confirm whether there is a self-service way to delete projects or if this requires admin action."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20080",
+        "author": {
+          "displayName": "Pooja Agarwal",
+          "emailAddress": "pooja.agarwal@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I tried looking for a delete option under Project Settings but I only see the option to update project details. I do not have an Administration menu available in my account. I am a project admin for payment-gateway-v1 but not a global SonarQube admin." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-15T11:20:00.000+0000",
+        "updated": "2025-11-15T11:20:00.000+0000"
+      },
+      {
+        "id": "20081",
+        "author": {
+          "displayName": "Jira Automation",
+          "emailAddress": "automation@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Ticket assigned to SonarQube admin team." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-15T11:21:00.000+0000",
+        "updated": "2025-11-15T11:21:00.000+0000"
+      },
+      {
+        "id": "20082",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Pooja, project deletion in SonarQube requires global administration privileges — project-level admin is not sufficient for deletion. This is by design to prevent accidental deletion of historical data. I can confirm that payment-gateway-v1 has no active pipeline runs in the last 90 days and the GitHub repo is archived. I will proceed with deletion. Note that all historical analysis, issues, and metrics for this project will be permanently removed and cannot be recovered." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-15T14:00:00.000+0000",
+        "updated": "2025-11-15T14:00:00.000+0000"
+      },
+      {
+        "id": "20083",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Project payment-gateway-v1 has been deleted from SonarQube. All historical data has been removed. The project no longer appears in the portfolio or any dashboards. For future reference: to request project deletion raise a ticket with the project key, confirmation that the repository is archived or deleted, and confirmation that the team no longer needs the analysis history." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-16T09:55:00.000+0000",
+        "updated": "2025-11-16T09:55:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

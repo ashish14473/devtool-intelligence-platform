@@ -1,0 +1,111 @@
+{
+  "issue": {
+    "key": "SQ-1006",
+    "fields": {
+      "summary": "SonarQube analysis token expired causing CI pipeline authentication failure",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Suresh Pillai",
+        "emailAddress": "suresh.pillai@company.com"
+      },
+      "labels": ["sonarqube", "access", "token", "ci-pipeline"],
+      "created": "2025-11-05T07:45:00.000+0000",
+      "resolutiondate": "2025-11-05T10:00:00.000+0000",
+      "description": "All our Jenkins pipelines started failing overnight with the error: ERROR: SonarQube server can not be reached at https://sonar.company.com. Please check the property sonar.host.url. The SonarQube server is up and accessible via browser. The pipelines were working fine until yesterday evening. We use a shared service account token stored in Jenkins credentials to authenticate with SonarQube. This is affecting all 14 microservice pipelines simultaneously."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "20050",
+        "author": {
+          "displayName": "Jenkins CI",
+          "emailAddress": "jenkins@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Build #1204 FAILED. Stage: SonarQube Analysis. Error: 401 Unauthorized. Token authentication failed." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-05T07:50:00.000+0000",
+        "updated": "2025-11-05T07:50:00.000+0000"
+      },
+      {
+        "id": "20051",
+        "author": {
+          "displayName": "Suresh Pillai",
+          "emailAddress": "suresh.pillai@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "I tested the token manually using curl and got 401. So the token itself is the issue, not the network or server. The token belongs to the sq-ci-service-account user. Can you check if the token has expired?" }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-05T08:15:00.000+0000",
+        "updated": "2025-11-05T08:15:00.000+0000"
+      },
+      {
+        "id": "20052",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Confirmed. The token for sq-ci-service-account was created 90 days ago and our SonarQube instance has a global token expiry policy set to 90 days. The token expired at midnight. I am generating a new token now. Going forward we should either set the token to never expire for CI service accounts or set a calendar reminder 2 weeks before expiry. Generating new token and updating Jenkins credentials now." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-05T08:45:00.000+0000",
+        "updated": "2025-11-05T08:45:00.000+0000"
+      },
+      {
+        "id": "20053",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "New token generated and updated in Jenkins global credentials. All 14 pipelines are now passing SonarQube analysis. Root cause: 90-day token expiry policy applied to service account token. Fix: generated new token with no expiry for CI service accounts. Recommendation: review token expiry policy for all CI service accounts." }
+              ]
+            }
+          ]
+        },
+        "created": "2025-11-05T09:55:00.000+0000",
+        "updated": "2025-11-05T09:55:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}
