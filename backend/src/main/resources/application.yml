@@ -28,7 +28,7 @@ spring:
 
 # ── OpenAI ────────────────────────────────────────────────────────────────────
 openai:
-  api-key: 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
+  api-key: 
   base-url: https://api.openai.com/v1
   chat-model: gpt-4o-mini
   embedding-model: text-embedding-3-small
@@ -38,9 +38,9 @@ openai:
 # Paste your new Jira API token below after revoking the old one.
 # Generate at: https://id.atlassian.com/manage-api-tokens
 jira:
-  base-url: https://aitian888.atlassian.net
-  email: aitian.888@gmail.com
-  api-token: ATATT3xFfGF0kcmyuW2NSxeA2QER_8dVLMFXrnLM2-0r6iQwT99_d75lXVzHf9PPpoaPMfWsDXZIK0-Lkqi6io6Jyuq_AfFoJZ4o5PhBuZ0C4HsUFZ1HawOtMVZWOFRFTu9oe5odX5ZEC6Ph4B2vsJFK7Piq_Heon741RFOxnzJL11dVDhmth0E=4E5A7FCB
+  base-url: 
+  email: 
+  api-token: 
   project-key: SCRUM
   similarity-threshold: 0.75
 
