@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4010",
+    "fields": {
+      "summary": "Recurring Confluence access issue - new joiners cannot find or access team spaces",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+      "labels": ["confluence", "access", "onboarding", "recurring"],
+      "created": "2025-11-24T09:00:00.000+0000",
+      "resolutiondate": "2025-11-25T10:00:00.000+0000",
+      "description": "We have 4 new joiners this month who all cannot access the engineering Confluence spaces. This happens every time someone joins - they get Confluence access via their account but cannot see team spaces. The IT onboarding process gives them a Confluence account but does not add them to the all-engineers group which is required to access most spaces. This is the fifth ticket this quarter about new joiners and Confluence access."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50090",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Every month we get 3 to 5 of these tickets. New joiners waste their first day unable to access documentation. The IT team creates their accounts but does not add them to the right Confluence groups. This should be automated." }] }] },
+        "created": "2025-11-24T09:30:00.000+0000",
+        "updated": "2025-11-24T09:30:00.000+0000"
+      },
+      {
+        "id": "50091",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Added all 4 new joiners to the all-engineers group. They now have access to all engineering spaces. This is the fifth time this quarter. I am escalating to IT to add Confluence group assignment to the standard onboarding checklist. Short term: IT should add new engineers to all-engineers group on day 1. Long term: automate this via the IT ITSM system to trigger group assignment when a new engineer account is created." }] }] },
+        "created": "2025-11-24T11:00:00.000+0000",
+        "updated": "2025-11-24T11:00:00.000+0000"
+      },
+      {
+        "id": "50092",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Access granted. But I want to flag that this is a recurring problem we keep closing as resolved without fixing the root cause. Every sprint we close this ticket and next sprint it comes back with different names. The IT onboarding process needs to be fixed permanently." }] }] },
+        "created": "2025-11-25T09:50:00.000+0000",
+        "updated": "2025-11-25T09:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

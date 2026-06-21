@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3005",
+    "fields": {
+      "summary": "Stale build artifacts causing intermittent test failures on Jenkins",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+      "labels": ["jenkins", "pipeline", "workspace", "artifacts"],
+      "created": "2025-11-01T09:00:00.000+0000",
+      "resolutiondate": "2025-11-03T11:00:00.000+0000",
+      "description": "We are seeing intermittent test failures on Jenkins that we cannot reproduce locally. The failures are inconsistent - the same commit sometimes passes and sometimes fails. After investigation we noticed the failures always involve test classes that check file output. We suspect stale files from previous builds in the workspace are interfering with the current build. The Jenkins workspace is not being cleaned between runs."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40040",
+        "author": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Checked the workspace and found build output directories from 3 weeks ago still present. The test that is failing checks whether a specific output file exists and its content - if a stale version of the file is present from a previous failed build the test passes for the wrong reason or fails unexpectedly depending on the state." }] }] },
+        "created": "2025-11-01T09:30:00.000+0000",
+        "updated": "2025-11-01T09:30:00.000+0000"
+      },
+      {
+        "id": "40041",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Add cleanWs() at the start and end of your Jenkinsfile pipeline block using the Workspace Cleanup plugin. Add it as a post step: post { always { cleanWs() } }. This ensures the workspace is wiped after every build regardless of success or failure. For an immediate fix manually clean the workspace via Jenkins UI: your job > Workspace > Wipe Out Current Workspace." }] }] },
+        "created": "2025-11-02T10:00:00.000+0000",
+        "updated": "2025-11-02T10:00:00.000+0000"
+      },
+      {
+        "id": "40042",
+        "author": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Added cleanWs() in post always block. Manually wiped existing workspace. Ran 5 consecutive builds and all passed consistently. Intermittent failures resolved. All new teams should have this in their Jenkinsfile by default." }] }] },
+        "created": "2025-11-03T10:50:00.000+0000",
+        "updated": "2025-11-03T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4004",
+    "fields": {
+      "summary": "How to set up Confluence space for new engineering team - onboarding query",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+      "labels": ["confluence", "onboarding", "space-setup"],
+      "created": "2025-10-28T10:00:00.000+0000",
+      "resolutiondate": "2025-10-30T12:00:00.000+0000",
+      "description": "Our new platform team needs a Confluence space to document our services, runbooks, and architecture decisions. We do not know how to request a new space, what template to use, how to set up the right permissions so only our team can edit but others can read, and how to structure the space following company standards. We have been told there are company templates but we cannot find them."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50030",
+        "author": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We need the space to have sections for Architecture, Runbooks, Service Documentation, and Team Information. We want our team to be space admins and able to edit all pages, but other teams should only be able to view." }] }] },
+        "created": "2025-10-28T10:30:00.000+0000",
+        "updated": "2025-10-28T10:30:00.000+0000"
+      },
+      {
+        "id": "50031",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I have created the PLATFORM space using the Engineering Team template which includes Architecture, Runbooks, Services, and Team sections pre-built. Permissions set as requested: your team group platform-team has Space Admin and can edit, all-engineers group has View only. The company templates are in the Confluence template gallery under Create > From Template > Company Templates. For future space requests raise a ticket with your team name, required sections, and desired permissions and we create it within 24 hours." }] }] },
+        "created": "2025-10-29T09:00:00.000+0000",
+        "updated": "2025-10-29T09:00:00.000+0000"
+      },
+      {
+        "id": "50032",
+        "author": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Space is set up perfectly. The pre-built sections are exactly what we needed. The template gallery was not obvious to find - it should be better signposted for new teams." }] }] },
+        "created": "2025-10-30T11:50:00.000+0000",
+        "updated": "2025-10-30T11:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

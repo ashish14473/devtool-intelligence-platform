@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4003",
+    "fields": {
+      "summary": "Confluence search not returning pages that definitely exist",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+      "labels": ["confluence", "search", "indexing"],
+      "created": "2025-10-22T09:00:00.000+0000",
+      "resolutiondate": "2025-10-24T16:00:00.000+0000",
+      "description": "Confluence search is not returning pages that I know exist. I created a page called API Design Guidelines last week and when I search for it nothing comes up. I can navigate to it directly via the space but search does not find it. Other team members have the same issue - recently created or edited pages are not appearing in search results."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50020",
+        "author": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The page was created 5 days ago and still not in search. Other pages created at the same time also missing from search. Pages created before this week appear fine in search." }] }] },
+        "created": "2025-10-22T09:30:00.000+0000",
+        "updated": "2025-10-22T09:30:00.000+0000"
+      },
+      {
+        "id": "50021",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is a Confluence search index lag issue. On Confluence Cloud the search index can take up to 48 hours to index new content in some cases, especially after bulk page creation. The index rebuild was triggered by our space migration last week. For Confluence Data Center we would reindex manually but on Cloud this is handled by Atlassian. I have raised a support ticket with Atlassian to expedite the reindex. Expect search to normalise within 24 hours." }] }] },
+        "created": "2025-10-23T10:00:00.000+0000",
+        "updated": "2025-10-23T10:00:00.000+0000"
+      },
+      {
+        "id": "50022",
+        "author": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Search is working again. All recent pages are now appearing in results. The 48 hour wait is frustrating but good to know this is a known Cloud limitation after migrations." }] }] },
+        "created": "2025-10-24T15:50:00.000+0000",
+        "updated": "2025-10-24T15:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

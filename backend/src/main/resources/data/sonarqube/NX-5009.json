@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5009",
+    "fields": {
+      "summary": "Nexus LDAP authentication failing for new joiners but working for existing users",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Sunita Bhatt", "emailAddress": "sunita.bhatt@company.com" },
+      "labels": ["nexus", "access", "ldap", "authentication"],
+      "created": "2025-11-24T10:00:00.000+0000",
+      "resolutiondate": "2025-11-25T14:00:00.000+0000",
+      "description": "Three new joiners cannot log in to Nexus. They get Invalid credentials error even though their LDAP credentials work for other tools like Confluence and Jenkins. Existing team members with LDAP accounts can log in fine. The new joiners were created in LDAP this week."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60080",
+        "author": { "displayName": "Sunita Bhatt", "emailAddress": "sunita.bhatt@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The three affected users are in the engineering LDAP group. Their accounts were created 3 days ago. They can log in to Confluence and Jenkins using the same credentials. Only Nexus is rejecting them." }] }] },
+        "created": "2025-11-24T10:30:00.000+0000",
+        "updated": "2025-11-24T10:30:00.000+0000"
+      },
+      {
+        "id": "60081",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Found the issue. Nexus LDAP sync runs every 24 hours and the new users created this week have not been synced yet. The sync cache still shows the old LDAP state. Triggered a manual LDAP sync via Administration > LDAP > Verify Connection and Clear Cache. New users can now log in. Going forward: LDAP sync frequency will be changed from 24 hours to 1 hour to reduce this lag for new joiners." }] }] },
+        "created": "2025-11-25T13:00:00.000+0000",
+        "updated": "2025-11-25T13:00:00.000+0000"
+      },
+      {
+        "id": "60082",
+        "author": { "displayName": "Sunita Bhatt", "emailAddress": "sunita.bhatt@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "All three users can now log in. The 1 hour sync frequency will help prevent this in future. But ideally new user onboarding should trigger an immediate LDAP sync." }] }] },
+        "created": "2025-11-25T13:50:00.000+0000",
+        "updated": "2025-11-25T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

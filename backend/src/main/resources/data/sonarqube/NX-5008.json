@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5008",
+    "fields": {
+      "summary": "Nexus repository group not including newly created hosted repository",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+      "labels": ["nexus", "repo-config", "group-repository"],
+      "created": "2025-11-22T10:00:00.000+0000",
+      "resolutiondate": "2025-11-22T15:00:00.000+0000",
+      "description": "We published our internal library to the maven-internal hosted repository but other teams cannot find it when using the maven-all group repository URL in their Maven settings. The library is visible when browsing nexus directly but maven dependency resolution against the group URL returns 404 for our artifact."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60070",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The artifact is definitely in maven-internal. I can browse it directly at nexus.company.com/repository/maven-internal. But when another team tries to resolve it via maven-all group they get 404." }] }] },
+        "created": "2025-11-22T10:30:00.000+0000",
+        "updated": "2025-11-22T10:30:00.000+0000"
+      },
+      {
+        "id": "60071",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Found it. The maven-internal hosted repository was not added to the maven-all group repository. When a new hosted repository is created it is not automatically included in existing group repositories - this must be done manually. Added maven-internal to maven-all group under Repository > Repositories > maven-all > Group > Members. The artifact is now resolvable via the group URL." }] }] },
+        "created": "2025-11-22T14:00:00.000+0000",
+        "updated": "2025-11-22T14:00:00.000+0000"
+      },
+      {
+        "id": "60072",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed - dependency resolving correctly via maven-all now. The fact that new repositories are not auto-added to groups is a Nexus gotcha that should be in the documentation." }] }] },
+        "created": "2025-11-22T14:50:00.000+0000",
+        "updated": "2025-11-22T14:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

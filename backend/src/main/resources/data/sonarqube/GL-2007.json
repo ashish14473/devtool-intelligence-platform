@@ -1,0 +1,55 @@
+{
+  "issue": {
+    "key": "GL-2007",
+    "fields": {
+      "summary": "GitLab Duo Chat not working after GitLab server upgrade - 422 error in JetBrains plugin",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Nikhil Sharma",
+        "emailAddress": "nikhil.sharma@company.com"
+      },
+      "labels": ["gitlab", "gitlab-duo", "chat", "jetbrains"],
+      "created": "2025-11-21T11:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "GitLab Duo Chat has stopped working in IntelliJ IDEA since the GitLab server was upgraded to 17.5 on November 14th. The chat panel loads but every message gets a 422 error response and no text is shown. I use IntelliJ IDEA 2024.2 with the GitLab plugin version 3.71. The exact same behaviour is being reported by developers using VS Code as well so this is not IDE specific. Code completion still works, only chat is affected."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40070",
+        "author": {
+          "displayName": "Nikhil Sharma",
+          "emailAddress": "nikhil.sharma@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I see a colleague raised the same issue as GL-2006 for VS Code. This confirms it is a server-side change in GitLab 17.5 affecting the Duo Chat API. At least 8 developers across two teams are affected. This is impacting productivity as we rely on Duo Chat heavily for code review assistance." }] }]
+        },
+        "created": "2025-11-21T11:30:00.000+0000",
+        "updated": "2025-11-21T11:30:00.000+0000"
+      },
+      {
+        "id": "40071",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed this is the same root cause as GL-2006. GitLab 17.5 changed the Duo Chat API request format and the current IDE plugins are sending the old format causing 422 errors. Solution: update the GitLab plugin in both VS Code and JetBrains to version 3.79 or above which sends the updated request format. Rolling out the fix to both tickets." }] }]
+        },
+        "created": "2025-11-22T09:00:00.000+0000",
+        "updated": "2025-11-22T09:00:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

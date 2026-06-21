@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3001",
+    "fields": {
+      "summary": "All Jenkins pipelines failing with 401 after credential rotation",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Priya Sharma", "emailAddress": "priya.sharma@company.com" },
+      "labels": ["jenkins", "credentials", "pipeline"],
+      "created": "2025-10-06T08:00:00.000+0000",
+      "resolutiondate": "2025-10-06T11:00:00.000+0000",
+      "description": "All 22 Jenkins pipelines started failing simultaneously at 8am with HTTP 401 errors. The failures started right after IT performed a scheduled credential rotation last night. Each pipeline uses a shared service account token stored in Jenkins credentials store. The token was rotated but the Jenkins credentials were not updated. This is blocking all deployments across every team."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40001",
+        "author": { "displayName": "Priya Sharma", "emailAddress": "priya.sharma@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed the issue - the service account password was rotated by IT last night but nobody updated the Jenkins credentials. This keeps happening every time IT does a rotation. Is there a way to automate this?" }] }] },
+        "created": "2025-10-06T08:30:00.000+0000",
+        "updated": "2025-10-06T08:30:00.000+0000"
+      },
+      {
+        "id": "40002",
+        "author": { "displayName": "Jenkins Bot", "emailAddress": "jenkins@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Build #2201 FAILED - 401 Unauthorized on SCM checkout step." }] }] },
+        "created": "2025-10-06T08:35:00.000+0000",
+        "updated": "2025-10-06T08:35:00.000+0000"
+      },
+      {
+        "id": "40003",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Updated the service account token in Jenkins Credentials Manager under Manage Jenkins > Credentials. All pipelines are now passing. Root cause: IT credential rotation was not communicated to the DevOps team so Jenkins credentials were not updated in sync. Fix: added Jenkins credential update to the IT credential rotation runbook. Workaround until automated: IT team will notify DevOps 24 hours before any credential rotation." }] }] },
+        "created": "2025-10-06T10:50:00.000+0000",
+        "updated": "2025-10-06T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

@@ -38,8 +38,8 @@ openai:
 # Paste your new Jira API token below after revoking the old one.
 # Generate at: https://id.atlassian.com/manage-api-tokens
 jira:
-  base-url: 
-  email: 
+  base-url: https://aitian888.atlassian.net
+  email: aitian.888@gmail.com
   api-token: 
   project-key: SCRUM
   similarity-threshold: 0.75

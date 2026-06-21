@@ -1,0 +1,83 @@
+{
+  "issue": {
+    "key": "GL-2009",
+    "fields": {
+      "summary": "GitLab merge request approvals not enforcing minimum reviewer count on protected branch",
+      "status": "Closed",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Pradeep Rajan",
+        "emailAddress": "pradeep.rajan@company.com"
+      },
+      "labels": ["gitlab", "merge-request", "approvals", "compliance"],
+      "created": "2025-10-15T10:00:00.000+0000",
+      "resolutiondate": "2025-10-30T09:00:00.000+0000",
+      "description": "We have configured our GitLab project to require a minimum of 2 approvals before a merge request can be merged to the main branch. However developers are successfully merging with only 1 approval or even 0 approvals. This is a compliance requirement and the fact that it can be bypassed is a serious issue. We have checked the approval settings multiple times and they appear to be configured correctly. This has allowed non-reviewed code to reach production twice already."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40090",
+        "author": {
+          "displayName": "Pradeep Rajan",
+          "emailAddress": "pradeep.rajan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Our approval settings show: Approvals required = 2, Allow merge request authors to approve their own = disabled, Prevent approval by users who add commits = enabled. Despite this merges are going through with a single approval. We have screenshots showing this happening." }] }]
+        },
+        "created": "2025-10-15T10:30:00.000+0000",
+        "updated": "2025-10-15T10:30:00.000+0000"
+      },
+      {
+        "id": "40091",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Can you check if the project has any approval rules that override the default? Go to Settings > Merge requests > Approval rules and check if there are individual rules that have a lower approval count than the default. Also check if the developers bypassing have the Maintainer role — Maintainers can merge without approvals by default if the override setting is enabled." }] }]
+        },
+        "created": "2025-10-17T09:00:00.000+0000",
+        "updated": "2025-10-17T09:00:00.000+0000"
+      },
+      {
+        "id": "40092",
+        "author": {
+          "displayName": "Pradeep Rajan",
+          "emailAddress": "pradeep.rajan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Checked all of the above. No overriding rules exist and the developers bypassing are Developers not Maintainers. We have been going back and forth on this for two weeks with no resolution. This is a compliance violation that is still ongoing. We have now escalated to our security team as this cannot wait for a proper fix. We are manually auditing all MRs as a temporary measure." }] }]
+        },
+        "created": "2025-10-28T11:00:00.000+0000",
+        "updated": "2025-10-28T11:00:00.000+0000"
+      },
+      {
+        "id": "40093",
+        "author": {
+          "displayName": "Pradeep Rajan",
+          "emailAddress": "pradeep.rajan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Closing this ticket as we have not received a resolution and our security team is now handling this separately. The issue is still unresolved from a product perspective. The manual audit process is not sustainable but we have no choice." }] }]
+        },
+        "created": "2025-10-30T08:55:00.000+0000",
+        "updated": "2025-10-30T08:55:00.000+0000"
+      }
+    ],
+    "total": 4
+  }
+}

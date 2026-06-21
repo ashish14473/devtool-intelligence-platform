@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5010",
+    "fields": {
+      "summary": "Request to set up PyPI proxy in Nexus for Python package management",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Ananya Singh", "emailAddress": "ananya.singh@company.com" },
+      "labels": ["nexus", "proxy-setup", "python", "pypi"],
+      "created": "2025-11-26T10:00:00.000+0000",
+      "resolutiondate": "2025-11-27T14:00:00.000+0000",
+      "description": "Our data science team uses Python extensively and currently downloads packages directly from PyPI. Security team has asked us to route all package downloads through Nexus like we do for Maven and npm. We need a PyPI proxy repository set up in Nexus and guidance on how to configure pip to use it. We have 12 Python services and data science notebooks that would use this."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60090",
+        "author": { "displayName": "Ananya Singh", "emailAddress": "ananya.singh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We use pip for package management and have a mix of regular pip installs and requirements.txt files. We also use conda for some data science environments. Do we need separate proxies for pip and conda?" }] }] },
+        "created": "2025-11-26T10:30:00.000+0000",
+        "updated": "2025-11-26T10:30:00.000+0000"
+      },
+      {
+        "id": "60091",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Created pypi-proxy repository in Nexus pointing to pypi.org. For pip configuration: add a pip.ini file with index-url = https://nexus.company.com/repository/pypi-proxy/simple and trusted-host = nexus.company.com. For conda: Nexus does not natively proxy conda channels - you would need to use a separate tool like Anaconda Repository or use pip within conda environments. For your Jenkins pipelines set PIP_INDEX_URL environment variable to the Nexus PyPI URL. Credentials: use your standard Nexus credentials." }] }] },
+        "created": "2025-11-27T10:00:00.000+0000",
+        "updated": "2025-11-27T10:00:00.000+0000"
+      },
+      {
+        "id": "60092",
+        "author": { "displayName": "Ananya Singh", "emailAddress": "ananya.singh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "PyPI proxy working. All our pip-based services routing through Nexus now. The conda limitation is noted - we will use pip within conda for now. Good to have all package managers going through a single Nexus instance." }] }] },
+        "created": "2025-11-27T13:50:00.000+0000",
+        "updated": "2025-11-27T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

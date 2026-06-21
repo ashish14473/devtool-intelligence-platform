@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3007",
+    "fields": {
+      "summary": "New team needs help setting up Jenkins pipeline for Java Spring Boot service",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+      "labels": ["jenkins", "onboarding", "java", "springboot"],
+      "created": "2025-11-10T10:00:00.000+0000",
+      "resolutiondate": "2025-11-12T14:00:00.000+0000",
+      "description": "Our team is setting up Jenkins for the first time for our Spring Boot microservice payment-processor. We need guidance on creating a Jenkinsfile, connecting our GitHub repository to Jenkins, running our Maven tests, building a Docker image, and pushing to our container registry. We do not have any existing Jenkinsfile to reference. We are on the shared Jenkins agent pool."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40060",
+        "author": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We use Java 17 and Maven 3.9. Our GitHub repo is company/payment-processor. We need stages for build, test, Docker build, and Docker push to our internal registry. We also want to know how to set up credentials for GitHub and Docker registry in Jenkins." }] }] },
+        "created": "2025-11-10T10:30:00.000+0000",
+        "updated": "2025-11-10T10:30:00.000+0000"
+      },
+      {
+        "id": "40061",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Same setup process as other teams. Use agent label java-agent for shared pool. Add stages: Build (mvn clean compile), Test (mvn test), Docker Build, Docker Push using registry-credentials. For GitHub use github-credentials already configured globally. Create a Multibranch Pipeline job in Jenkins pointing to your GitHub repo. I will share the standard Java Jenkinsfile template - this is the same guide I gave the Node.js team last month." }] }] },
+        "created": "2025-11-11T09:00:00.000+0000",
+        "updated": "2025-11-11T09:00:00.000+0000"
+      },
+      {
+        "id": "40062",
+        "author": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pipeline is working. Took us a day and a half to get it right even with the template. This onboarding process needs a proper written guide in the developer portal. Every new team is going through the same steps and raising the same ticket." }] }] },
+        "created": "2025-11-12T13:50:00.000+0000",
+        "updated": "2025-11-12T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

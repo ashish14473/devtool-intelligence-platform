@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "GL-2008",
+    "fields": {
+      "summary": "GitLab CI deployment job failing with permission denied on Kubernetes cluster",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Lakshmi Venkat",
+        "emailAddress": "lakshmi.venkat@company.com"
+      },
+      "labels": ["gitlab", "pipeline", "kubernetes", "deployment"],
+      "created": "2025-11-08T09:00:00.000+0000",
+      "resolutiondate": "2025-11-09T16:00:00.000+0000",
+      "description": "Our GitLab CI deployment stage is failing with: Error from server (Forbidden): deployments.apps is forbidden: User system:serviceaccount:gitlab-ci:deployer cannot create resource deployments in API group apps in the namespace production. This started failing after the Kubernetes cluster was upgraded by the infra team last week. The same pipeline was working fine before the upgrade. The GitLab CI configuration has not changed."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40080",
+        "author": {
+          "displayName": "Lakshmi Venkat",
+          "emailAddress": "lakshmi.venkat@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The error message clearly mentions a Kubernetes service account permission issue but we are filing under GitLab because that is where the failure appears. Should this be filed with the Kubernetes infra team instead? The GitLab pipeline itself looks correct." }] }]
+        },
+        "created": "2025-11-08T09:30:00.000+0000",
+        "updated": "2025-11-08T09:30:00.000+0000"
+      },
+      {
+        "id": "40081",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "You are correct — this is not a GitLab issue. The root cause is in Kubernetes. During the cluster upgrade the ClusterRole binding for the gitlab-ci deployer service account was reset, removing its permission to create and update Deployments in the production namespace. The Kubernetes infra team needs to re-apply the RBAC rules. The GitLab CI pipeline is working correctly — it is being blocked by Kubernetes access control, not by anything in GitLab." }] }]
+        },
+        "created": "2025-11-08T11:00:00.000+0000",
+        "updated": "2025-11-08T11:00:00.000+0000"
+      },
+      {
+        "id": "40082",
+        "author": {
+          "displayName": "Lakshmi Venkat",
+          "emailAddress": "lakshmi.venkat@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Kubernetes infra team has re-applied the RBAC ClusterRole binding. Deployment pipeline is now running successfully. Root cause confirmed: Kubernetes RBAC rules were not preserved during the cluster upgrade. This should be added to the cluster upgrade checklist." }] }]
+        },
+        "created": "2025-11-09T15:55:00.000+0000",
+        "updated": "2025-11-09T15:55:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

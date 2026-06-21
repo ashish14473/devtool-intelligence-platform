@@ -11,19 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Orchestrates the full ingestion pipeline on startup:
- *
- *   JSON files -> parse + preprocess -> LLM enrich -> SQL persist -> embed -> pgvector
- *
- * Data source switched from CSV to JSON (Jira API response format).
- * Everything downstream — enrichment, embedding, SQL storage, vector storage —
- * is unchanged because they all consume JiraTicket, which JsonIngestionService
- * still produces.
- *
- * Idempotent: skips tickets already in the DB, so restarting the app
- * does not re-process or re-bill for tickets already indexed.
- */
 @Service
 @Slf4j
 public class IngestionOrchestrator {
@@ -49,41 +36,31 @@ public class IngestionOrchestrator {
     @EventListener(ApplicationReadyEvent.class)
     public void runIngestionPipeline() {
         long start = System.currentTimeMillis();
-        log.info("=== Starting ingestion pipeline (JSON source) ===");
+        log.info("=== Starting ingestion pipeline (JSON source, {} analytics fields) ===", 7);
 
         List<JiraTicket> tickets = jsonIngestionService.loadTickets();
-        log.info("Step 1/3: loaded {} tickets from JSON files", tickets.size());
+        log.info("Loaded {} tickets from JSON files", tickets.size());
 
-        int newlyProcessed = 0, skippedUnresolved = 0, skippedExisting = 0, failed = 0;
+        int processed = 0, skippedUnresolved = 0, skippedExisting = 0, failed = 0;
 
         for (JiraTicket ticket : tickets) {
-
-            // Only resolved tickets have a confirmed answer worth indexing
             if (!ticket.isResolved()) {
-                log.debug("Skipping unresolved ticket {} (status: {})",
-                        ticket.getTicketId(), ticket.getStatus());
                 skippedUnresolved++;
                 continue;
             }
-
-            // Idempotency — skip if already persisted from a previous run
             if (ticketRepository.existsByTicketId(ticket.getTicketId())) {
-                log.debug("Ticket {} already indexed, skipping", ticket.getTicketId());
                 skippedExisting++;
                 continue;
             }
-
             try {
-                // Step 2: LLM enrichment — classify, summarise, extract pain point
                 EnrichedTicket enriched = enrichmentService.enrich(ticket);
-                log.info("Enriched {} -> tool={}, category={}, severity={}",
-                        ticket.getTicketId(), enriched.getToolName(),
-                        enriched.getCategory(), enriched.getSeverity());
+                log.info("Enriched {} -> tool={}, cat={}, sev={}, resType={}, sentiment={}, gap={}",
+                        ticket.getTicketId(), enriched.getToolName(), enriched.getCategory(),
+                        enriched.getSeverity(), enriched.getResolutionType(),
+                        enriched.getSentimentScore(), enriched.getKnowledgeGapFlag());
 
-                // Embed enriched summary + original title together
                 String textToEmbed = enriched.getSummary() + "\n" + ticket.getSummary();
 
-                // Step 3a: persist enriched fields to SQL tickets table
                 TicketEntity entity = TicketEntity.builder()
                         .ticketId(ticket.getTicketId())
                         .toolName(enriched.getToolName())
@@ -96,14 +73,21 @@ public class IngestionOrchestrator {
                         .createdDate(ticket.getCreatedDate())
                         .resolvedDate(ticket.getResolvedDate())
                         .embeddedText(textToEmbed)
+                        .resolutionType(enriched.getResolutionType())
+                        .sentimentScore(enriched.getSentimentScore())
+                        .frustrationFlag(Boolean.TRUE.equals(enriched.getFrustrationFlag()))
+                        .recurrenceSignal(Boolean.TRUE.equals(enriched.getRecurrenceSignal()))
+                        .rootCauseTool(enriched.getRootCauseTool())
+                        .knowledgeGapFlag(Boolean.TRUE.equals(enriched.getKnowledgeGapFlag()))
+                        .knowledgeGapDescription(enriched.getKnowledgeGapDescription())
                         .build();
+
                 ticketRepository.save(entity);
 
-                // Step 3b: embed and persist to pgvector
                 float[] vector = embeddingService.embed(textToEmbed);
                 pgVectorStore.save(ticket.getTicketId(), vector);
 
-                newlyProcessed++;
+                processed++;
 
             } catch (Exception e) {
                 log.error("Failed to process ticket {}: {}", ticket.getTicketId(), e.getMessage());
@@ -112,9 +96,8 @@ public class IngestionOrchestrator {
         }
 
         long elapsed = System.currentTimeMillis() - start;
-        log.info("=== Ingestion complete in {}ms ===", elapsed);
-        log.info("Results: {} new, {} skipped (existing), {} skipped (unresolved), {} failed",
-                newlyProcessed, skippedExisting, skippedUnresolved, failed);
+        log.info("=== Ingestion complete in {}ms: {} processed, {} skipped (existing), {} skipped (unresolved), {} failed ===",
+                elapsed, processed, skippedExisting, skippedUnresolved, failed);
         log.info("Total in pgvector: {}", pgVectorStore.count());
     }
 }

@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4001",
+    "fields": {
+      "summary": "Confluence space permissions not working - users can see pages they should not",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+      "labels": ["confluence", "permissions", "access"],
+      "created": "2025-10-08T09:00:00.000+0000",
+      "resolutiondate": "2025-10-09T14:00:00.000+0000",
+      "description": "Users in the engineering group can see pages in our finance-internal Confluence space even though I have set the space permissions to restrict access to only the finance-team group. I set the space permissions last week via Space Settings > Permissions but it does not seem to be taking effect. This is a compliance concern as the finance space contains salary information."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50001",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I checked the space permissions and finance-team group has View permission. But the engineering group also has View permission granted at the global site level. I think the global permissions are overriding the space-level restrictions." }] }] },
+        "created": "2025-10-08T09:30:00.000+0000",
+        "updated": "2025-10-08T09:30:00.000+0000"
+      },
+      {
+        "id": "50002",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed. In Confluence Cloud, global space permissions grant access unless explicitly restricted at space level. The engineering group has a global Can Use permission which allows them to view any space that does not explicitly exclude them. To restrict the finance space: go to Space Settings > Permissions, remove the engineering group from View access, and ensure only finance-team and confluence-admins have View. The global permission alone does not override space-level restrictions - you need to explicitly remove groups." }] }] },
+        "created": "2025-10-09T10:00:00.000+0000",
+        "updated": "2025-10-09T10:00:00.000+0000"
+      },
+      {
+        "id": "50003",
+        "author": { "displayName": "Pooja Agarwal", "emailAddress": "pooja.agarwal@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Removed engineering group from the finance space permissions. Tested with an engineering account - they can no longer see the space. Compliance issue resolved. This permission model is confusing and not well documented." }] }] },
+        "created": "2025-10-09T13:50:00.000+0000",
+        "updated": "2025-10-09T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

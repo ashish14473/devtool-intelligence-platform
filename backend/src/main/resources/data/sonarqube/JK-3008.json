@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3008",
+    "fields": {
+      "summary": "Jenkins shared library method not found after library version update",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+      "labels": ["jenkins", "shared-library", "pipeline"],
+      "created": "2025-11-15T09:00:00.000+0000",
+      "resolutiondate": "2025-11-16T12:00:00.000+0000",
+      "description": "Our Jenkins pipeline started failing with: java.lang.NoSuchMethodError: No signature of method deployToKubernetes is applicable. We use the company shared pipeline library and call deployToKubernetes in our Jenkinsfile. This worked until yesterday. Our Jenkinsfile has not changed. Looking at the shared library repository I can see the method was renamed to deployToK8s in a commit 2 days ago."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40070",
+        "author": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Checked the shared library changelog - there is no deprecation notice or migration guide for the rename. The method was just renamed without any announcement. At least 6 other teams using this method are now broken." }] }] },
+        "created": "2025-11-15T09:30:00.000+0000",
+        "updated": "2025-11-15T09:30:00.000+0000"
+      },
+      {
+        "id": "40071",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Short term fix: update your Jenkinsfile to use deployToK8s instead of deployToKubernetes. Long term: I have added the old method back as a deprecated wrapper that calls the new one and logs a warning. This gives teams time to migrate. Breaking changes to shared libraries must go through a deprecation cycle with 2 weeks notice going forward - raising this as a process improvement." }] }] },
+        "created": "2025-11-15T11:00:00.000+0000",
+        "updated": "2025-11-15T11:00:00.000+0000"
+      },
+      {
+        "id": "40072",
+        "author": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Updated to deployToK8s and pipeline is passing. But this is frustrating - shared library changes should not silently break all consumers. The deprecated wrapper is a good interim solution." }] }] },
+        "created": "2025-11-16T11:50:00.000+0000",
+        "updated": "2025-11-16T11:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

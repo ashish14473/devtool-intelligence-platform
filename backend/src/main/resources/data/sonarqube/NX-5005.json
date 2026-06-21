@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5005",
+    "fields": {
+      "summary": "Nexus Maven proxy slow - taking 5 minutes to resolve first dependency download",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+      "labels": ["nexus", "performance", "maven-proxy", "slow"],
+      "created": "2025-11-12T09:00:00.000+0000",
+      "resolutiondate": "2025-11-14T16:00:00.000+0000",
+      "description": "Maven dependency resolution through our Nexus proxy is extremely slow. The first download of any dependency takes 3 to 5 minutes even for small JAR files. Subsequent downloads from cache are fast. This is happening for all teams. The Nexus server itself is healthy and showing normal CPU and memory. The slowdown started appearing about a week ago."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60040",
+        "author": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Looking at Nexus logs the proxy is timing out when trying to reach Maven Central before eventually falling through to the cached version. The connection to Maven Central seems to be the bottleneck." }] }] },
+        "created": "2025-11-12T09:30:00.000+0000",
+        "updated": "2025-11-12T09:30:00.000+0000"
+      },
+      {
+        "id": "60041",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Found the issue. Our network team changed the egress firewall rules last week which is now routing Nexus external requests through a slower inspection proxy. The Nexus to Maven Central connection now routes through DPI which adds 4 to 5 minutes of latency per unique URL. Fixed by adding nexus.company.com to the firewall bypass list for outbound HTTPS to Maven Central. Nexus proxy speed back to normal - first downloads now under 15 seconds." }] }] },
+        "created": "2025-11-13T10:00:00.000+0000",
+        "updated": "2025-11-13T10:00:00.000+0000"
+      },
+      {
+        "id": "60042",
+        "author": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed - download speeds are back to normal. Build times back to expected. The root cause was in the network layer not Nexus itself. Good detective work." }] }] },
+        "created": "2025-11-14T15:50:00.000+0000",
+        "updated": "2025-11-14T15:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

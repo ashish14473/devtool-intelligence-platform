@@ -184,3 +184,80 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   .ticket-detail { display: none; }
   .bubble { max-width: 90%; }
 }
+
+/* ── Extended analytics styles ───────────────────────────────────────────── */
+.analytics-outer { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.analytics-subnav { display: flex; gap: 4px; padding: .5rem 1.5rem;
+  border-bottom: 0.5px solid var(--border); flex-shrink: 0; background: var(--bg); flex-wrap: wrap; }
+.analytics-tab { font-size: .8rem; font-weight: 500; color: var(--slate);
+  background: none; border: 1px solid transparent; border-radius: 6px;
+  padding: .28rem .75rem; cursor: pointer; white-space: nowrap; }
+.analytics-tab.active { background: var(--navy); color: #fff; }
+.analytics-tab:hover:not(.active) { border-color: var(--border); }
+.analytics-content { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+
+.summary-kpis { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+.kpi-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: .75rem 1rem; min-width: 130px; flex: 1; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+.kpi-val { font-size: 1.6rem; font-weight: 600; line-height: 1; }
+.kpi-label { font-size: .72rem; color: var(--slate); margin-top: .25rem; font-weight: 500; }
+.kpi-sub { font-size: .68rem; color: var(--slate-lt); margin-top: .15rem; }
+.kpi-row-small { display: flex; gap: 10px; margin-bottom: 1rem; }
+.kpi-row-small .kpi-card { min-width: 120px; }
+
+.charts-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 10px; }
+.chart-card.wide { grid-column: 1 / -1; }
+
+.panel-header { margin-bottom: 1rem; }
+.panel-title { font-size: 1rem; font-weight: 600; color: var(--dark); }
+.panel-sub { font-size: .82rem; color: var(--slate); margin-top: .25rem; }
+
+.resolution-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; justify-content: center; }
+.res-chip { font-size: .72rem; font-weight: 600; padding: .2rem .55rem;
+  border-radius: 999px; border: 1px solid; }
+
+.dep-list { display: flex; flex-direction: column; gap: 8px; padding: .5rem 0; }
+.dep-row { display: flex; align-items: center; gap: 10px; padding: .5rem .75rem;
+  background: var(--bg); border-radius: 8px; }
+.dep-tool { font-size: .82rem; font-weight: 600; padding: .2rem .55rem;
+  border-radius: 6px; }
+.dep-tool.filed { background: #EFF6FF; color: #1D4ED8; }
+.dep-tool.root  { background: #FFF7ED; color: #C2410C; }
+.dep-arrow { color: var(--slate-lt); font-size: .9rem; }
+.dep-count { margin-left: auto; font-size: .78rem; color: var(--slate); }
+
+.gap-row { display: flex; align-items: flex-start; gap: 12px; padding: .7rem 0;
+  border-bottom: 0.5px solid var(--border); }
+.gap-row:last-child { border-bottom: none; }
+.gap-rank { font-size: .8rem; font-weight: 700; color: var(--slate-lt); min-width: 24px; padding-top: 2px; }
+.gap-body { flex: 1; }
+.gap-title { font-size: .88rem; font-weight: 500; color: var(--dark); margin-bottom: .2rem; }
+.gap-meta { font-size: .74rem; color: var(--slate); }
+.gap-count { font-size: 1.1rem; font-weight: 700; color: #7c3aed; min-width: 28px; text-align: right; }
+
+.insight-box { border-left: 3px solid; background: var(--bg); border-radius: 0 8px 8px 0;
+  padding: .75rem 1rem; margin-top: 10px; }
+.insight-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; }
+.insight-body { font-size: .85rem; color: var(--dark); line-height: 1.5; }
+
+.ticket-mini-list { display: flex; flex-direction: column; gap: 5px; padding: .25rem 0; }
+.ticket-mini-row { display: flex; align-items: center; gap: 6px; }
+.ticket-mini-tool { font-size: .72rem; color: var(--slate); flex: 1; }
+.ticket-mini-badge { font-size: .68rem; font-weight: 600; padding: .15rem .4rem;
+  border-radius: 999px; border: 1px solid; white-space: nowrap; }
+.ticket-mini-more { font-size: .74rem; color: var(--slate-lt); padding-top: 4px; }
+
+/* flag badges in ticket browser */
+.flag-badge { font-size: .75rem; }
+.detail-alert { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 6px;
+  padding: .4rem .7rem; font-size: .82rem; color: #C2410C; margin-bottom: .6rem; }
+.detail-flag { background: var(--bg); border-radius: 6px;
+  padding: .35rem .7rem; font-size: .82rem; margin-bottom: .4rem; color: var(--dark); }
+.detail-flag.frustration { background: #FEF2F2; }
+.detail-flag.recurring { background: #FFFBEB; }
+.detail-flag.gap { background: #F5F3FF; }
+
+@media (max-width: 700px) {
+  .charts-grid { grid-template-columns: 1fr; }
+  .summary-kpis { flex-direction: column; }
+}

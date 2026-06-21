@@ -9,16 +9,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * JPA entity for the 'tickets' table — the structured SQL side of the
- * knowledge base. Stores enriched ticket fields so they can be queried,
- * filtered, and aggregated independently from the vector search.
- *
- * Kept separate from VectorDocument intentionally: this table is for
- * SQL analytics (GROUP BY tool_name, counts, filters), while the
- * ticket_embeddings table is for semantic similarity search. They
- * share ticket_id as a natural join key.
- */
 @Entity
 @Table(name = "tickets")
 @Data
@@ -63,6 +53,29 @@ public class TicketEntity {
 
     @Column(name = "embedded_text", columnDefinition = "TEXT")
     private String embeddedText;
+
+    // ── Analytics fields ──────────────────────────────────────────────────────
+
+    @Column(name = "resolution_type", length = 20)
+    private String resolutionType;
+
+    @Column(name = "sentiment_score")
+    private Integer sentimentScore;
+
+    @Column(name = "frustration_flag")
+    private Boolean frustrationFlag;
+
+    @Column(name = "recurrence_signal")
+    private Boolean recurrenceSignal;
+
+    @Column(name = "root_cause_tool", length = 100)
+    private String rootCauseTool;
+
+    @Column(name = "knowledge_gap_flag")
+    private Boolean knowledgeGapFlag;
+
+    @Column(name = "knowledge_gap_description", columnDefinition = "TEXT")
+    private String knowledgeGapDescription;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

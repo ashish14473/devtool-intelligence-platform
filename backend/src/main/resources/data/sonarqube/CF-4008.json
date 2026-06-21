@@ -1,0 +1,35 @@
+{
+  "issue": {
+    "key": "CF-4008",
+    "fields": {
+      "summary": "Confluence page tree not loading for large spaces with 500+ pages",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+      "labels": ["confluence", "performance", "page-tree"],
+      "created": "2025-11-18T09:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "The page tree in our ENGINEERING space takes over 30 seconds to load and sometimes times out completely. The space has grown to 620 pages. Navigating between pages requires waiting for the tree to reload each time. This is making Confluence nearly unusable for our team. Smaller spaces with under 200 pages load instantly."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50070",
+        "author": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This started becoming noticeable around 400 pages and is now at the point where the team avoids using the page tree. We are using Chrome and Firefox and both have the same issue. Network requests show the page tree API call taking 28 seconds." }] }] },
+        "created": "2025-11-18T09:30:00.000+0000",
+        "updated": "2025-11-18T09:30:00.000+0000"
+      },
+      {
+        "id": "50071",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is a known performance issue with Confluence Cloud for spaces above 500 pages. Recommended approach: archive or move pages that are older than 2 years to a separate ARCHIVE space to reduce active page count. Also restructure the space to use sub-spaces for major areas rather than one flat mega-space. I am raising this with Atlassian as a performance issue - they have a fix in their roadmap for Q1 2026. Interim workaround: use Confluence search instead of page tree navigation." }] }] },
+        "created": "2025-11-19T10:00:00.000+0000",
+        "updated": "2025-11-19T10:00:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

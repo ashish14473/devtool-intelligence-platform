@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4009",
+    "fields": {
+      "summary": "Confluence to SharePoint migration - which content can be migrated automatically",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+      "labels": ["confluence", "migration", "sharepoint"],
+      "created": "2025-11-20T10:00:00.000+0000",
+      "resolutiondate": "2025-11-22T14:00:00.000+0000",
+      "description": "Our business unit is being asked to migrate 3 Confluence spaces to SharePoint as part of a company-wide Microsoft 365 adoption. We need to understand what gets migrated automatically versus what needs manual work, whether page hierarchy is preserved, how attachments are handled, and whether Confluence macros have SharePoint equivalents. We have approximately 300 pages across the 3 spaces."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50080",
+        "author": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The spaces include standard pages, pages with Jira macros, Draw.io diagrams, and pages with status macros. We need to know which of these survive migration and which will need to be rebuilt manually." }] }] },
+        "created": "2025-11-20T10:30:00.000+0000",
+        "updated": "2025-11-20T10:30:00.000+0000"
+      },
+      {
+        "id": "50081",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "What migrates automatically: page text content and basic formatting, attachments including PDFs and images, page hierarchy as SharePoint folder structure. What does NOT migrate: Jira macros become broken links, Draw.io diagrams export as static images losing editability, status macros are stripped, page comments are lost, page version history is not preserved. For 300 pages estimate 40 to 60 percent will need manual remediation after automated migration. Recommend using the Confluence to SharePoint migration tool from the Atlassian marketplace which handles basic content but plan for 2 weeks of manual cleanup." }] }] },
+        "created": "2025-11-21T10:00:00.000+0000",
+        "updated": "2025-11-21T10:00:00.000+0000"
+      },
+      {
+        "id": "50082",
+        "author": { "displayName": "Rohan Das", "emailAddress": "rohan.das@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is more work than expected. We will proceed but the business unit needs to allocate 2 weeks of engineering time for manual cleanup. The Jira macros being lost is the biggest pain point as we use them heavily for sprint tracking pages." }] }] },
+        "created": "2025-11-22T13:50:00.000+0000",
+        "updated": "2025-11-22T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

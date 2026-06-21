@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3003",
+    "fields": {
+      "summary": "How to set up first Jenkins pipeline for new Node.js microservice",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+      "labels": ["jenkins", "onboarding", "nodejs"],
+      "created": "2025-10-20T09:00:00.000+0000",
+      "resolutiondate": "2025-10-22T12:00:00.000+0000",
+      "description": "Our team is new to Jenkins and we need to set up a CI/CD pipeline for our Node.js microservice notification-service. We need to understand how to create a Jenkinsfile, how to connect our GitHub repository, how to run our Jest tests, build a Docker image, and push it to our container registry. We have been given access to the Jenkins instance but we do not know where to start."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40020",
+        "author": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We have Node 18, npm, and Docker available on our dev machines. Our GitHub repo is already created at company/notification-service. We have been told we need to use the shared Jenkins agent pool but we are not sure how to specify this in our Jenkinsfile." }] }] },
+        "created": "2025-10-20T09:30:00.000+0000",
+        "updated": "2025-10-20T09:30:00.000+0000"
+      },
+      {
+        "id": "40021",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Hi Meera, here are the steps. Create a Jenkinsfile in your repo root with agent label nodejs-agent for the shared pool. Add stages for Install (npm ci), Test (npm test), Build Docker image, and Push to registry. For GitHub connection: in Jenkins go to New Item, select Multibranch Pipeline, add your GitHub repo URL, and use the github-credentials credential ID already configured. For Docker registry access use the registry-credentials credential ID. I will share a template Jenkinsfile for Node.js projects." }] }] },
+        "created": "2025-10-21T10:00:00.000+0000",
+        "updated": "2025-10-21T10:00:00.000+0000"
+      },
+      {
+        "id": "40022",
+        "author": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Pipeline is working now. First build passed all stages including Docker push. The template Jenkinsfile was very helpful. One suggestion - this information should be in the developer portal as a getting started guide. We spent 2 days trying to figure this out before raising this ticket." }] }] },
+        "created": "2025-10-22T11:45:00.000+0000",
+        "updated": "2025-10-22T11:45:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

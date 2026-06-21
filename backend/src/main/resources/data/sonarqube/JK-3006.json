@@ -1,0 +1,35 @@
+{
+  "issue": {
+    "key": "JK-3006",
+    "fields": {
+      "summary": "Jenkins Maven builds failing to download dependencies from Nexus after password expiry",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Sunita Bhatt", "emailAddress": "sunita.bhatt@company.com" },
+      "labels": ["jenkins", "nexus", "credentials", "maven"],
+      "created": "2025-11-08T07:30:00.000+0000",
+      "resolutiondate": "2025-11-08T10:30:00.000+0000",
+      "description": "All Maven builds on Jenkins started failing overnight with: Could not transfer artifact from/to nexus-releases: Return code is 401. The Nexus repository is accessible via browser. The Maven settings.xml in Jenkins uses a service account nexus-ci-user whose password expired last night according to the 90-day password policy. This is the same root cause as the SonarQube token expiry issue we had last month - service account credentials expiring and breaking CI pipelines."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40050",
+        "author": { "displayName": "Sunita Bhatt", "emailAddress": "sunita.bhatt@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is the third time in 6 months that a service account expiry has taken down CI. First it was SonarQube token, then GitLab runner token, now Nexus. We need a proper solution for service account credential management not just fixing each one individually." }] }] },
+        "created": "2025-11-08T08:00:00.000+0000",
+        "updated": "2025-11-08T08:00:00.000+0000"
+      },
+      {
+        "id": "40051",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Reset the nexus-ci-user password and updated Maven settings.xml in Jenkins. All builds passing now. Sunita is right - this is a systemic cross-tool problem. Root cause is that all our CI service accounts are subject to the same 90-day password expiry policy designed for human accounts. Fix: raise a request with IT security to exempt CI service accounts from password expiry or implement a secrets rotation automation using HashiCorp Vault." }] }] },
+        "created": "2025-11-08T10:20:00.000+0000",
+        "updated": "2025-11-08T10:20:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

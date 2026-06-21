@@ -6,8 +6,8 @@ import com.devtools.intelligence.model.JiraTicket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.LinkedHashMap;
@@ -15,14 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Calls OpenAI's chat completions API to turn a raw, noisy Jira ticket
- * into a clean, structured EnrichedTicket: tool name, category,
- * severity, a one-sentence pain point, and a factual summary.
+ * Calls OpenAI chat completions to enrich a raw Jira ticket.
  *
- * This is the Java equivalent of the Spring AI ChatClient +
- * BeanOutputConverter example shown earlier - same prompt, same JSON
- * contract, just driven through a plain RestClient call so it has no
- * dependency on Spring AI's release cycle.
+ * Single LLM call returns all fields in one JSON response:
+ *   - Phase 1: toolName, category, painPoint, summary, severity
+ *   - Phase 2: resolutionType, sentimentScore, frustrationFlag,
+ *              recurrenceSignal, rootCauseTool, knowledgeGapFlag,
+ *              knowledgeGapDescription
+ *
+ * No extra API calls per ticket — all analytics derived in one shot.
  */
 @Service
 @Slf4j
@@ -40,40 +41,58 @@ public class EnrichmentService {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Enriches a single ticket via one chat completion call.
-     * Uses OpenAI's "JSON mode" (response_format: json_object) so the
-     * model is constrained to return valid JSON - this is what lets us
-     * parse the response directly into EnrichedTicket without brittle
-     * regex or markdown-fence stripping.
-     */
     public EnrichedTicket enrich(JiraTicket ticket) {
 
         String systemPrompt = """
-                You are a support ticket analyst for an internal developer tools team.
-                Analyse the given ticket and return ONLY a JSON object - no markdown, \
-                no preamble, no code fences - matching exactly this shape:
+                You are a developer tools support analyst. Analyse the given ticket and \
+                return ONLY a JSON object — no markdown, no preamble, no code fences.
 
+                Return exactly this shape:
                 {
                   "toolName": string,
-                  "category": one of ["auth","performance","config","integration","bug","docs","feature-request"],
+                  "category": one of ["auth","performance","config","integration","bug",\
+                "onboarding","docs","migration","feature-request","pipeline-issue",\
+                "access","cleanup","proxy-setup","plugin-conflict","credential-issue"],
                   "painPoint": string,
                   "summary": string,
-                  "severity": one of ["low","medium","high","critical"]
+                  "severity": one of ["low","medium","high","critical"],
+                  "resolutionType": one of ["FIXED","WORKAROUND","UNANSWERED","ABANDONED"],
+                  "sentimentScore": integer 1-5,
+                  "frustrationFlag": boolean,
+                  "recurrenceSignal": boolean,
+                  "rootCauseTool": string or null,
+                  "knowledgeGapFlag": boolean,
+                  "knowledgeGapDescription": string or null
                 }
 
-                Rules:
-                - toolName: use the tool name given in the ticket if present, otherwise infer it from context.
-                - category: pick the single best-fitting category from the list above.
-                - painPoint: one plain-language sentence describing what the developer experienced. No ticket IDs, no jargon.
-                - summary: 3-5 factual sentences covering problem, root cause (if known), fix (if known), and workaround (if any). \
-                Strip names, dates, ticket IDs and URLs. Do not speculate beyond what is stated.
-                - severity: base this on the ticket's priority field and the apparent impact described.
+                Field rules:
+                - toolName: use the tool name from the ticket key prefix or infer from context
+                - category: pick the single best-fitting category
+                - painPoint: one plain-language sentence, no ticket IDs
+                - summary: 3-5 factual sentences: problem, root cause, fix, workaround. \
+                Strip names, dates, ticket IDs, URLs
+                - severity: based on priority field and described business impact
+                - resolutionType: FIXED = root cause permanently addressed; \
+                WORKAROUND = temporary fix, likely to recur; \
+                UNANSWERED = closed without clear resolution; \
+                ABANDONED = reporter stopped responding
+                - sentimentScore: 1 = very positive/satisfied, 5 = very frustrated/angry. \
+                Read tone of comments especially the reporter's final comment
+                - frustrationFlag: true if any comment shows frustration, resignation, \
+                repeated complaints, or dissatisfaction with the resolution
+                - recurrenceSignal: true if comments say "this keeps happening", \
+                "third time this month", "workaround", or suggest root cause not fixed
+                - rootCauseTool: if the root cause lies in a DIFFERENT tool than the one \
+                the ticket was filed against, name that tool. Otherwise null
+                - knowledgeGapFlag: true if a documentation article or onboarding guide \
+                would have prevented this ticket from being raised
+                - knowledgeGapDescription: if knowledgeGapFlag is true, one sentence \
+                describing what article would prevent this class of ticket. Otherwise null
                 """;
 
         String userPrompt = """
                 Ticket ID: %s
-                Tool name (from Jira field): %s
+                Tool (from key prefix): %s
                 Priority: %s
                 Status: %s
                 Labels: %s
@@ -96,7 +115,7 @@ public class EnrichmentService {
 
         Map<String, Object> requestBody = new LinkedHashMap<>();
         requestBody.put("model", properties.getChatModel());
-        requestBody.put("temperature", 0.1); // low temperature - we want consistent, factual extraction
+        requestBody.put("temperature", 0.1);
         requestBody.put("response_format", Map.of("type", "json_object"));
         requestBody.put("messages", List.of(
                 Map.of("role", "system", "content", systemPrompt),
@@ -114,9 +133,6 @@ public class EnrichmentService {
 
         } catch (Exception e) {
             log.error("Enrichment failed for ticket {}: {}", ticket.getTicketId(), e.getMessage());
-            // Fail gracefully with a fallback rather than crashing the whole
-            // ingestion run over one bad ticket - this mirrors how the real
-            // pipeline should behave under partial failure.
             return fallbackEnrichment(ticket);
         }
     }
@@ -124,25 +140,26 @@ public class EnrichmentService {
     private EnrichedTicket parseEnrichedTicket(String rawResponse, String ticketId) throws Exception {
         JsonNode root = objectMapper.readTree(rawResponse);
         String content = root.path("choices").path(0).path("message").path("content").asText();
-
         if (content.isBlank()) {
             throw new IllegalStateException("Empty completion content for ticket " + ticketId);
         }
-
         return objectMapper.readValue(content, EnrichedTicket.class);
     }
 
     private EnrichedTicket fallbackEnrichment(JiraTicket ticket) {
-        // A conservative, clearly-marked fallback so a single API failure
-        // (rate limit, transient network issue) doesn't drop the ticket
-        // from the knowledge base entirely - it just gets a lower-quality
-        // entry that's still searchable on tool name and raw summary.
-        return new EnrichedTicket(
-                ticket.getToolName(),
-                "bug",
-                ticket.getSummary(),
-                "Automatic enrichment failed for this ticket; showing raw summary: " + ticket.getSummary(),
-                "medium"
-        );
+        EnrichedTicket e = new EnrichedTicket();
+        e.setToolName(ticket.getToolName());
+        e.setCategory("bug");
+        e.setPainPoint(ticket.getSummary());
+        e.setSummary("Automatic enrichment failed. Raw summary: " + ticket.getSummary());
+        e.setSeverity("medium");
+        e.setResolutionType("UNANSWERED");
+        e.setSentimentScore(3);
+        e.setFrustrationFlag(false);
+        e.setRecurrenceSignal(false);
+        e.setRootCauseTool(null);
+        e.setKnowledgeGapFlag(false);
+        e.setKnowledgeGapDescription(null);
+        return e;
     }
 }

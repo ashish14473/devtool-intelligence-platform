@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "SQ-1014",
+    "fields": {
+      "summary": "SonarQube setup needed for Python Flask microservice - coverage not showing",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": {
+        "displayName": "Sneha Kulkarni",
+        "emailAddress": "sneha.kulkarni@company.com"
+      },
+      "reporter": {
+        "displayName": "Harish Gopal",
+        "emailAddress": "harish.gopal@company.com"
+      },
+      "labels": ["sonarqube", "onboarding", "python", "flask"],
+      "created": "2025-10-28T11:00:00.000+0000",
+      "resolutiondate": "2025-10-29T12:00:00.000+0000",
+      "description": "We have a Python Flask service and want to get SonarQube running for it. Our main problem is that the scanner runs but shows 0.0% coverage even though our pytest tests do run and pass. We are generating a coverage.xml file using pytest-cov but SonarQube does not seem to pick it up. Nobody on the team has done Python SonarQube setup before and we could not find a clear guide internally."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40030",
+        "author": {
+          "displayName": "Harish Gopal",
+          "emailAddress": "harish.gopal@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Our sonar-project.properties currently has sonar.sources=. and sonar.language=py but nothing about coverage paths. The coverage.xml is being generated in the project root directory." }] }]
+        },
+        "created": "2025-10-28T11:30:00.000+0000",
+        "updated": "2025-10-28T11:30:00.000+0000"
+      },
+      {
+        "id": "40031",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "You are missing the sonar.python.coverage.reportPaths=coverage.xml property. This is the same issue I helped another team with last month for their Django service. Add that property to your sonar-project.properties and the coverage will appear. This question comes up every time a Python team onboards. We really need a Python SonarQube setup guide on the wiki." }] }]
+        },
+        "created": "2025-10-29T09:00:00.000+0000",
+        "updated": "2025-10-29T09:00:00.000+0000"
+      },
+      {
+        "id": "40032",
+        "author": {
+          "displayName": "Harish Gopal",
+          "emailAddress": "harish.gopal@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "That fixed it. Coverage showing at 74% now. I agree a wiki page would prevent this being raised every time. Closing the ticket." }] }]
+        },
+        "created": "2025-10-29T11:55:00.000+0000",
+        "updated": "2025-10-29T11:55:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

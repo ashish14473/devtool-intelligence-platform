@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5004",
+    "fields": {
+      "summary": "New team needs access to Nexus Maven and Docker repositories",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+      "labels": ["nexus", "access", "onboarding"],
+      "created": "2025-11-04T10:00:00.000+0000",
+      "resolutiondate": "2025-11-05T11:00:00.000+0000",
+      "description": "Our new data-engineering team needs access to Nexus to pull Maven dependencies and Docker base images and to push our own Docker images to the internal registry. We have 6 team members who all need access. We also need a dedicated Docker hosted repository for our team's images. We do not have Nexus accounts yet and do not know the process for requesting access."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60030",
+        "author": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Team members are: farhan.sheikh, rohan.das, ananya.singh, kiran.reddy, meera.iyer, kavitha.rajan. We need read access to maven-proxy and docker-proxy repositories and write access to push to a new data-engineering Docker repository." }] }] },
+        "created": "2025-11-04T10:30:00.000+0000",
+        "updated": "2025-11-04T10:30:00.000+0000"
+      },
+      {
+        "id": "60031",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Created Nexus accounts for all 6 team members and added them to the developers role which grants read access to all proxy repositories. Created docker-data-engineering hosted repository for your team's images. Granted your team push access to this repository. Your Docker push URL is nexus.company.com:8082/docker-data-engineering. Use your Nexus credentials for authentication. Maven settings.xml should point to nexus.company.com/repository/maven-proxy." }] }] },
+        "created": "2025-11-05T10:00:00.000+0000",
+        "updated": "2025-11-05T10:00:00.000+0000"
+      },
+      {
+        "id": "60032",
+        "author": { "displayName": "Farhan Sheikh", "emailAddress": "farhan.sheikh@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "All access confirmed. Successfully pulled Maven dependencies and pushed our first Docker image. The onboarding process was quick once we knew who to contact. This should be documented somewhere visible for new teams." }] }] },
+        "created": "2025-11-05T10:50:00.000+0000",
+        "updated": "2025-11-05T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

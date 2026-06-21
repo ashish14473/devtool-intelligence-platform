@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "SQ-1015",
+    "fields": {
+      "summary": "SonarQube analysis fails intermittently with connection refused on some Jenkins agents",
+      "status": "Done",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Sanjay Krishnan",
+        "emailAddress": "sanjay.krishnan@company.com"
+      },
+      "labels": ["sonarqube", "scanner", "jenkins", "intermittent"],
+      "created": "2025-11-02T10:00:00.000+0000",
+      "resolutiondate": "2025-11-06T14:00:00.000+0000",
+      "description": "SonarQube analysis is failing intermittently on some of our Jenkins build agents with a connection refused error when trying to reach the SonarQube server. The same pipeline on the same code succeeds when it runs on a different agent. The SonarQube server itself is healthy and accessible from the office network. This started after we added 3 new Jenkins agents last week. Older agents work fine, new agents fail consistently."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40040",
+        "author": {
+          "displayName": "Sanjay Krishnan",
+          "emailAddress": "sanjay.krishnan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I tested manually from the new agent VMs and can ping the SonarQube server. But curl to https://sonar.company.com fails with SSL certificate verification error. The old agents have no such problem." }] }]
+        },
+        "created": "2025-11-02T10:45:00.000+0000",
+        "updated": "2025-11-02T10:45:00.000+0000"
+      },
+      {
+        "id": "40041",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is actually not a SonarQube issue at all. The root cause is that the new Jenkins agents were provisioned without the company internal CA certificate installed in their Java truststore. SonarQube uses a certificate signed by our internal CA. The old agents had the CA cert installed during initial setup. You need to raise this with the Jenkins infrastructure team to install the CA cert on the new agents using keytool. This is a Jenkins agent provisioning gap, not a SonarQube problem." }] }]
+        },
+        "created": "2025-11-04T09:30:00.000+0000",
+        "updated": "2025-11-04T09:30:00.000+0000"
+      },
+      {
+        "id": "40042",
+        "author": {
+          "displayName": "Sanjay Krishnan",
+          "emailAddress": "sanjay.krishnan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Jenkins team installed the internal CA cert on all 3 new agents and SonarQube analysis is now working correctly on all agents. Confirmed the root cause was the missing certificate in the Jenkins agent Java truststore, not anything in SonarQube itself." }] }]
+        },
+        "created": "2025-11-06T13:55:00.000+0000",
+        "updated": "2025-11-06T13:55:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

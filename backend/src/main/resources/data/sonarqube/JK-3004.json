@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3004",
+    "fields": {
+      "summary": "Jenkins Maven builds taking 35 minutes due to dependency re-download on every run",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Deepak Verma", "emailAddress": "deepak.verma@company.com" },
+      "labels": ["jenkins", "performance", "maven", "caching"],
+      "created": "2025-10-25T11:00:00.000+0000",
+      "resolutiondate": "2025-10-28T14:00:00.000+0000",
+      "description": "Our Maven build on Jenkins takes 35 minutes on every run. Most of this time is spent downloading Maven dependencies from our Nexus repository — around 800MB of jars downloaded fresh every single build. Locally the same build takes 4 minutes because Maven caches dependencies in ~/.m2. The Jenkins agents are ephemeral Docker containers which means the Maven cache is destroyed after every build. This is blocking developer velocity as we can only run 2 builds per hour per agent."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40030",
+        "author": { "displayName": "Deepak Verma", "emailAddress": "deepak.verma@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I tried adding -Dmaven.repo.local=/tmp/m2-cache to our Maven command but since the Docker container is destroyed after each build the cache does not persist. We need a way to share the Maven cache across builds." }] }] },
+        "created": "2025-10-25T11:30:00.000+0000",
+        "updated": "2025-10-25T11:30:00.000+0000"
+      },
+      {
+        "id": "40031",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Solution is to mount a persistent volume for the Maven cache on the Jenkins agent Docker containers. Add this to your Jenkinsfile agent block: volumes: /var/jenkins-m2-cache:/root/.m2. This mounts a shared directory on the Jenkins host into the Maven cache location inside every container. The cache persists across builds and is shared across all jobs on the same agent host. Build time should drop to 6-8 minutes after the first warm-up run." }] }] },
+        "created": "2025-10-27T09:00:00.000+0000",
+        "updated": "2025-10-27T09:00:00.000+0000"
+      },
+      {
+        "id": "40032",
+        "author": { "displayName": "Deepak Verma", "emailAddress": "deepak.verma@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Implemented the persistent volume mount. First build after change still took 30 minutes to warm the cache. Second build onwards averaging 7 minutes. Massive improvement. This should be the default for all Maven projects on Jenkins - recommend adding to the standard Jenkinsfile template." }] }] },
+        "created": "2025-10-28T13:50:00.000+0000",
+        "updated": "2025-10-28T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

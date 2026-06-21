@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5002",
+    "fields": {
+      "summary": "How to set up Nexus proxy repository for npm packages",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+      "labels": ["nexus", "onboarding", "npm", "proxy"],
+      "created": "2025-10-18T10:00:00.000+0000",
+      "resolutiondate": "2025-10-20T14:00:00.000+0000",
+      "description": "Our team has been told to route all npm package downloads through our internal Nexus repository instead of downloading directly from the public npm registry. We do not know how to configure our Node.js projects and Jenkins pipelines to use the Nexus npm proxy, what the Nexus URL is for npm, and whether we need to authenticate. We are also not sure if Nexus already has a proxy configured for npm or if we need to request one."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60010",
+        "author": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We have 4 Node.js services that currently download from public npm. We need all of them to use Nexus. Do we need to create an .npmrc file and if so what should be in it?" }] }] },
+        "created": "2025-10-18T10:30:00.000+0000",
+        "updated": "2025-10-18T10:30:00.000+0000"
+      },
+      {
+        "id": "60011",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We already have an npm proxy repository configured in Nexus. Create an .npmrc file in your project root with: registry=https://nexus.company.com/repository/npm-proxy/. For authentication add: //nexus.company.com/repository/npm-proxy/:_auth=BASE64_OF_USERNAME:PASSWORD using the nexus-reader credentials. In Jenkins use the npm-nexus-credentials credential ID which is already configured. No changes needed to your package.json." }] }] },
+        "created": "2025-10-19T10:00:00.000+0000",
+        "updated": "2025-10-19T10:00:00.000+0000"
+      },
+      {
+        "id": "60012",
+        "author": { "displayName": "Nisha Patel", "emailAddress": "nisha.patel@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Working now. All 4 services pulling npm packages from Nexus. The .npmrc approach is straightforward. This should be in the developer onboarding docs - took us 3 days to find out we needed to do this." }] }] },
+        "created": "2025-10-20T13:50:00.000+0000",
+        "updated": "2025-10-20T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

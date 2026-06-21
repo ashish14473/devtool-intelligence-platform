@@ -145,6 +145,9 @@ public class JsonIngestionService {
             case "CR" -> "Code Review Tool";
             case "ART" -> "Artifact Registry";
             case "SEC" -> "Secrets Manager";
+            case "JK" -> "Jenkins";
+            case "CF" -> "Confluence";
+            case "NX" -> "Nexus";
             default -> prefix;
         };
     }

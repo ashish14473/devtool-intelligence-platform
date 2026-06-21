@@ -1,0 +1,55 @@
+{
+  "issue": {
+    "key": "GL-2006",
+    "fields": {
+      "summary": "GitLab Duo Chat returning empty responses in VS Code after workspace upgrade",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": {
+        "displayName": "Aditya Kumar",
+        "emailAddress": "aditya.kumar@company.com"
+      },
+      "reporter": {
+        "displayName": "Rashida Khan",
+        "emailAddress": "rashida.khan@company.com"
+      },
+      "labels": ["gitlab", "gitlab-duo", "chat", "vscode"],
+      "created": "2025-11-20T09:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "Since our organisation upgraded to GitLab 17.5 last week, GitLab Duo Chat in VS Code is returning completely empty responses. When I type a question in the Duo Chat panel the spinner shows for a few seconds then the response area is blank. Code suggestions still work fine. Only the chat feature is broken. This started for our entire team simultaneously right after the GitLab upgrade on November 14th."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40060",
+        "author": {
+          "displayName": "Rashida Khan",
+          "emailAddress": "rashida.khan@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "I checked the VS Code extension logs and see: Error: GitLab Duo Chat API returned 422 Unprocessable Entity. This happens on every chat message regardless of content. Other teammates are reporting the same issue since the upgrade." }] }]
+        },
+        "created": "2025-11-20T09:30:00.000+0000",
+        "updated": "2025-11-20T09:30:00.000+0000"
+      },
+      {
+        "id": "40061",
+        "author": {
+          "displayName": "Aditya Kumar",
+          "emailAddress": "aditya.kumar@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Investigating. The 422 error from the Duo Chat API started appearing after the GitLab 17.5 upgrade. This looks like a compatibility issue between the VS Code extension version and the new API format in 17.5. Checking if a newer extension version resolves this. Will update." }] }]
+        },
+        "created": "2025-11-21T10:00:00.000+0000",
+        "updated": "2025-11-21T10:00:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

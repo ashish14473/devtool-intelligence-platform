@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "SQ-1016",
+    "fields": {
+      "summary": "Cognitive complexity rule flagging false positives in Spring Boot event handlers",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Meghna Pillai",
+        "emailAddress": "meghna.pillai@company.com"
+      },
+      "labels": ["sonarqube", "rules", "false-positive", "spring-boot"],
+      "created": "2025-10-14T09:00:00.000+0000",
+      "resolutiondate": "2025-10-17T11:00:00.000+0000",
+      "description": "SonarQube is flagging our Spring Boot event handler methods for cognitive complexity even though they are simple switch statements dispatching to well-named private methods. The rule is treating each case branch as adding complexity even when each branch is a single method call. We have 40 such handler classes and all of them are now failing the quality gate. These are not genuinely complex methods."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40050",
+        "author": {
+          "displayName": "Meghna Pillai",
+          "emailAddress": "meghna.pillai@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The methods look like: switch(event.getType()) { case ORDER_CREATED: handleOrderCreated(event); break; case ORDER_UPDATED: handleOrderUpdated(event); break; } The complexity score is 15 just from the switch cases. These are genuinely readable methods." }] }]
+        },
+        "created": "2025-10-14T09:30:00.000+0000",
+        "updated": "2025-10-14T09:30:00.000+0000"
+      },
+      {
+        "id": "40051",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is a known limitation of the cognitive complexity rule — it does not distinguish between dispatching switch statements and genuinely complex conditional logic. The right fix is to raise the cognitive complexity threshold in your quality profile from 15 to 20, or to add a NOSONAR comment on the affected methods as a workaround. Changing the threshold would require quality profile admin access. For now add NOSONAR comments to unblock yourselves and I will raise a separate discussion about adjusting the threshold." }] }]
+        },
+        "created": "2025-10-15T10:00:00.000+0000",
+        "updated": "2025-10-15T10:00:00.000+0000"
+      },
+      {
+        "id": "40052",
+        "author": {
+          "displayName": "Meghna Pillai",
+          "emailAddress": "meghna.pillai@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We have added NOSONAR to unblock the immediate release. But this means 40 classes now have suppression comments which is not ideal. When will the threshold be reviewed? This workaround also means genuine complexity issues in these files will be suppressed too." }] }]
+        },
+        "created": "2025-10-17T10:55:00.000+0000",
+        "updated": "2025-10-17T10:55:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

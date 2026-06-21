@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3010",
+    "fields": {
+      "summary": "Jenkins agent disk full causing build failures - third time this month",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+      "labels": ["jenkins", "pipeline", "disk-space", "recurring"],
+      "created": "2025-11-22T08:00:00.000+0000",
+      "resolutiondate": "2025-11-22T12:00:00.000+0000",
+      "description": "Jenkins builds are failing again with: No space left on device. This is the third time this month. The Jenkins agent host is running out of disk space because old Docker images and build workspaces are not being cleaned up. Every time this happens we manually clear the disk and it works for a week or two before filling up again. We need a permanent fix not another manual cleanup."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40090",
+        "author": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Ran docker system prune manually again to free up space. Builds are working now. But this is not a fix - it is going to happen again in 2 weeks. We raised this same issue in October and November. Each time it is resolved by manual cleanup and then it comes back." }] }] },
+        "created": "2025-11-22T08:30:00.000+0000",
+        "updated": "2025-11-22T08:30:00.000+0000"
+      },
+      {
+        "id": "40091",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "You are right - manual cleanup is not acceptable. Implementing two permanent fixes. First: adding a cron job on the Jenkins agent hosts to run docker system prune -f daily at 2am. Second: configuring the Jenkins Workspace Cleanup plugin to automatically delete workspaces older than 7 days under Manage Jenkins > System > Workspace Cleanup. These will prevent the disk from filling up. Done - monitoring for the next 2 weeks." }] }] },
+        "created": "2025-11-22T11:45:00.000+0000",
+        "updated": "2025-11-22T11:45:00.000+0000"
+      },
+      {
+        "id": "40092",
+        "author": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Good. But I have to say - we raised this three times and it took three incidents to get a proper fix. This should have been resolved permanently the first time. Hoping the cron job actually solves it this time." }] }] },
+        "created": "2025-11-22T12:00:00.000+0000",
+        "updated": "2025-11-22T12:00:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

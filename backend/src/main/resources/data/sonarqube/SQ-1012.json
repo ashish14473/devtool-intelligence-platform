@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "SQ-1012",
+    "fields": {
+      "summary": "SonarQube analysis token expired again breaking all CI pipelines",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": {
+        "displayName": "Rahul Mehta",
+        "emailAddress": "rahul.mehta@company.com"
+      },
+      "reporter": {
+        "displayName": "Divya Nair",
+        "emailAddress": "divya.nair@company.com"
+      },
+      "labels": ["sonarqube", "access", "token", "recurring"],
+      "created": "2025-11-25T08:00:00.000+0000",
+      "resolutiondate": "2025-11-25T10:30:00.000+0000",
+      "description": "The SonarQube CI service account token has expired again and all 14 Jenkins pipelines are failing with 401 errors. This is the exact same issue as SQ-1006 which was raised last month. The token was renewed then but has expired again. We need a permanent fix not just another token renewal. Every time this happens we lose half a day of pipeline time across the entire engineering org."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40010",
+        "author": {
+          "displayName": "Divya Nair",
+          "emailAddress": "divya.nair@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is the third time this has happened in 6 months. Each time we renew the token and say we will fix it properly but nothing changes. We need to either set the token to never expire or build an automated rotation mechanism. Just renewing it again is not acceptable." }] }]
+        },
+        "created": "2025-11-25T08:30:00.000+0000",
+        "updated": "2025-11-25T08:30:00.000+0000"
+      },
+      {
+        "id": "40011",
+        "author": {
+          "displayName": "Jenkins CI",
+          "emailAddress": "jenkins@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Build #1587 FAILED. SonarQube Analysis stage. Error: 401 Unauthorized." }] }]
+        },
+        "created": "2025-11-25T08:35:00.000+0000",
+        "updated": "2025-11-25T08:35:00.000+0000"
+      },
+      {
+        "id": "40012",
+        "author": {
+          "displayName": "Rahul Mehta",
+          "emailAddress": "rahul.mehta@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Token renewed and all pipelines are running. I have also now set the token to never expire to permanently fix this. I acknowledge this should have been done after the first incident. Apologies for the repeated disruption." }] }]
+        },
+        "created": "2025-11-25T10:25:00.000+0000",
+        "updated": "2025-11-25T10:25:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "issue": {
+    "key": "SQ-1013",
+    "fields": {
+      "summary": "How do I set up SonarQube for a Python Django project in our CI pipeline",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": {
+        "displayName": "Sneha Kulkarni",
+        "emailAddress": "sneha.kulkarni@company.com"
+      },
+      "reporter": {
+        "displayName": "Preethi Subramaniam",
+        "emailAddress": "preethi.subramaniam@company.com"
+      },
+      "labels": ["sonarqube", "onboarding", "python", "django"],
+      "created": "2025-10-02T10:00:00.000+0000",
+      "resolutiondate": "2025-10-03T15:00:00.000+0000",
+      "description": "Our team is new to SonarQube and we want to integrate our Python Django application with SonarQube. We are not sure what files to create, what properties to set, how to generate coverage reports for Python, and how to connect it to our GitLab CI pipeline. We could not find clear documentation for Python specifically on our internal wiki."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40020",
+        "author": {
+          "displayName": "Preethi Subramaniam",
+          "emailAddress": "preethi.subramaniam@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We use pytest for testing and we know there is a pytest-cov plugin that generates coverage reports. We are not sure what format SonarQube expects and where to put the coverage file." }] }]
+        },
+        "created": "2025-10-02T10:30:00.000+0000",
+        "updated": "2025-10-02T10:30:00.000+0000"
+      },
+      {
+        "id": "40021",
+        "author": {
+          "displayName": "Sneha Kulkarni",
+          "emailAddress": "sneha.kulkarni@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "For Python Django with SonarQube: create a sonar-project.properties file with sonar.projectKey=your-project, sonar.sources=., sonar.language=py, sonar.python.coverage.reportPaths=coverage.xml. Run pytest with coverage using: pytest --cov=. --cov-report=xml:coverage.xml. In your GitLab CI add a sonar-scanner stage after the test stage. The Python plugin is already installed on our SonarQube instance." }] }]
+        },
+        "created": "2025-10-02T14:00:00.000+0000",
+        "updated": "2025-10-02T14:00:00.000+0000"
+      },
+      {
+        "id": "40022",
+        "author": {
+          "displayName": "Preethi Subramaniam",
+          "emailAddress": "preethi.subramaniam@company.com"
+        },
+        "body": {
+          "type": "doc",
+          "version": 1,
+          "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Working perfectly now. Django application showing 68% coverage in SonarQube and quality gate is configured. The setup was straightforward once we had the right properties. This should definitely be on the internal wiki." }] }]
+        },
+        "created": "2025-10-03T14:50:00.000+0000",
+        "updated": "2025-10-03T14:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "JK-3002",
+    "fields": {
+      "summary": "Jenkins build failing after pipeline plugin upgrade to 2.6.0",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+      "reporter": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+      "labels": ["jenkins", "plugin", "pipeline"],
+      "created": "2025-10-14T10:00:00.000+0000",
+      "resolutiondate": "2025-10-15T16:00:00.000+0000",
+      "description": "After the Jenkins admin upgraded the Pipeline plugin to version 2.6.0 yesterday, our declarative pipelines are failing at the agent block with: java.lang.NoSuchMethodError: No such DSL method agent found among steps. This worked fine on 2.5.2. We have not changed our Jenkinsfiles. Around 8 teams are affected."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "40010",
+        "author": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Rolled back to 2.5.2 temporarily and pipelines work again. The issue is definitely introduced by the 2.6.0 plugin upgrade. There seems to be an incompatibility with our current Pipeline Declarative Plugin version 1.9.3." }] }] },
+        "created": "2025-10-14T10:30:00.000+0000",
+        "updated": "2025-10-14T10:30:00.000+0000"
+      },
+      {
+        "id": "40011",
+        "author": { "displayName": "Ravi Shankar", "emailAddress": "ravi.shankar@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Confirmed the incompatibility. Pipeline plugin 2.6.0 requires Pipeline Declarative Plugin 2.0+ but we are on 1.9.3. Both plugins need to be upgraded together. Upgrading Pipeline Declarative Plugin to 2.2.1 alongside 2.6.0 resolves the issue. I will schedule this upgrade for the maintenance window Saturday. Staying on 2.5.2 until then." }] }] },
+        "created": "2025-10-14T14:00:00.000+0000",
+        "updated": "2025-10-14T14:00:00.000+0000"
+      },
+      {
+        "id": "40012",
+        "author": { "displayName": "Amit Joshi", "emailAddress": "amit.joshi@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Upgrade completed on Saturday. Both plugins now on compatible versions and all pipelines passing. This keeps happening - plugin upgrades break things because dependencies are not checked first. Can we add a plugin compatibility check to the upgrade process?" }] }] },
+        "created": "2025-10-15T15:50:00.000+0000",
+        "updated": "2025-10-15T15:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

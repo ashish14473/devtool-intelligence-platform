@@ -1,0 +1,35 @@
+{
+  "issue": {
+    "key": "NX-5007",
+    "fields": {
+      "summary": "Nexus Docker registry returning 503 during peak hours",
+      "status": "In Progress",
+      "priority": "High",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+      "labels": ["nexus", "performance", "docker", "503"],
+      "created": "2025-11-20T09:00:00.000+0000",
+      "resolutiondate": null,
+      "description": "The Nexus Docker registry is returning 503 Service Unavailable errors between 9am and 11am on weekdays. This is when most teams are running their morning CI builds. Docker image pulls and pushes fail intermittently during this window. Outside peak hours the registry works fine. Nexus server metrics show CPU usage hitting 95% during the 9-11am window."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60060",
+        "author": { "displayName": "Kiran Reddy", "emailAddress": "kiran.reddy@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The 503 errors are causing CI failures for at least 8 teams during peak hours. Teams have learned to retry their builds after 11am but this is causing significant delays. The Nexus server has 8 cores and 32GB RAM which should be sufficient." }] }] },
+        "created": "2025-11-20T09:30:00.000+0000",
+        "updated": "2025-11-20T09:30:00.000+0000"
+      },
+      {
+        "id": "60061",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Analysed Nexus thread dumps during peak. The Docker registry connector is hitting the max connection limit of 200 concurrent connections. All 8 teams triggering builds at 9am creates 200+ simultaneous Docker pull requests. Short term: increased max connections to 500 in Nexus config. Medium term: implement pull-through caching more aggressively so frequently used base images are served from local cache without hitting the backend. Long term: scale Nexus horizontally with a second node." }] }] },
+        "created": "2025-11-21T10:00:00.000+0000",
+        "updated": "2025-11-21T10:00:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

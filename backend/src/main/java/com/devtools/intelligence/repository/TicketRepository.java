@@ -7,84 +7,74 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the structured tickets table.
- * Handles CRUD plus the analytics queries powering the dashboard.
- */
 @Repository
 public interface TicketRepository extends JpaRepository<TicketEntity, Long> {
 
     boolean existsByTicketId(String ticketId);
-
     List<TicketEntity> findByToolNameOrderByCreatedDateDesc(String toolName);
-
     List<TicketEntity> findByCategoryOrderByCreatedDateDesc(String category);
-
     List<TicketEntity> findAllByOrderByCreatedDateDesc();
 
-    // ── Analytics queries ─────────────────────────────────────────────────────
-
-    /**
-     * Returns ticket count grouped by tool name.
-     * Result columns: toolName (String), count (Long).
-     */
-    @Query("SELECT t.toolName AS toolName, COUNT(t) AS count " +
-           "FROM TicketEntity t " +
-           "GROUP BY t.toolName " +
-           "ORDER BY COUNT(t) DESC")
+    // ── Existing analytics ────────────────────────────────────────────────────
+    @Query("SELECT t.toolName AS toolName, COUNT(t) AS count FROM TicketEntity t GROUP BY t.toolName ORDER BY COUNT(t) DESC")
     List<ToolCountProjection> countByTool();
 
-    /**
-     * Returns ticket count grouped by category.
-     */
-    @Query("SELECT t.category AS category, COUNT(t) AS count " +
-           "FROM TicketEntity t " +
-           "GROUP BY t.category " +
-           "ORDER BY COUNT(t) DESC")
+    @Query("SELECT t.category AS category, COUNT(t) AS count FROM TicketEntity t GROUP BY t.category ORDER BY COUNT(t) DESC")
     List<CategoryCountProjection> countByCategory();
 
-    /**
-     * Returns ticket count grouped by severity.
-     */
-    @Query("SELECT t.severity AS severity, COUNT(t) AS count " +
-           "FROM TicketEntity t " +
-           "GROUP BY t.severity " +
-           "ORDER BY CASE t.severity " +
-           "  WHEN 'critical' THEN 1 WHEN 'high' THEN 2 " +
-           "  WHEN 'medium' THEN 3 WHEN 'low' THEN 4 ELSE 5 END")
+    @Query("SELECT t.severity AS severity, COUNT(t) AS count FROM TicketEntity t GROUP BY t.severity ORDER BY CASE t.severity WHEN 'critical' THEN 1 WHEN 'high' THEN 2 WHEN 'medium' THEN 3 WHEN 'low' THEN 4 ELSE 5 END")
     List<SeverityCountProjection> countBySeverity();
 
-    /**
-     * Returns count of tickets per tool per category — the heatmap data.
-     */
-    @Query("SELECT t.toolName AS toolName, t.category AS category, COUNT(t) AS count " +
-           "FROM TicketEntity t " +
-           "GROUP BY t.toolName, t.category " +
-           "ORDER BY t.toolName, COUNT(t) DESC")
+    @Query("SELECT t.toolName AS toolName, t.category AS category, COUNT(t) AS count FROM TicketEntity t GROUP BY t.toolName, t.category ORDER BY t.toolName, COUNT(t) DESC")
     List<ToolCategoryCountProjection> countByToolAndCategory();
 
-    // ── Projection interfaces ──────────────────────────────────────────────────
-    // Spring Data projects query results onto these interfaces without needing
-    // extra DTO classes — they're read-only views of the aggregation results.
+    // ── Resolution quality ────────────────────────────────────────────────────
+    @Query("SELECT t.toolName AS toolName, t.resolutionType AS resolutionType, COUNT(t) AS count FROM TicketEntity t WHERE t.resolutionType IS NOT NULL GROUP BY t.toolName, t.resolutionType ORDER BY t.toolName, COUNT(t) DESC")
+    List<ResolutionTypeProjection> countByToolAndResolutionType();
 
-    interface ToolCountProjection {
-        String getToolName();
-        Long getCount();
-    }
+    @Query("SELECT t.resolutionType AS resolutionType, COUNT(t) AS count FROM TicketEntity t WHERE t.resolutionType IS NOT NULL GROUP BY t.resolutionType ORDER BY COUNT(t) DESC")
+    List<ResolutionSummaryProjection> resolutionSummary();
 
-    interface CategoryCountProjection {
-        String getCategory();
-        Long getCount();
-    }
+    // ── Sentiment and frustration ─────────────────────────────────────────────
+    @Query("SELECT t.toolName AS toolName, AVG(t.sentimentScore) AS avgSentiment, COUNT(t) AS count, SUM(CASE WHEN t.frustrationFlag = true THEN 1 ELSE 0 END) AS frustratedCount FROM TicketEntity t WHERE t.sentimentScore IS NOT NULL GROUP BY t.toolName ORDER BY AVG(t.sentimentScore) DESC")
+    List<SentimentProjection> sentimentByTool();
 
-    interface SeverityCountProjection {
-        String getSeverity();
-        Long getCount();
-    }
+    @Query("SELECT t FROM TicketEntity t WHERE t.frustrationFlag = true ORDER BY t.createdDate DESC")
+    List<TicketEntity> findFrustratedTickets();
 
-    interface ToolCategoryCountProjection {
-        String getToolName();
-        String getCategory();
-        Long getCount();
-    }
+    @Query("SELECT t FROM TicketEntity t WHERE t.recurrenceSignal = true ORDER BY t.createdDate DESC")
+    List<TicketEntity> findRecurringTickets();
+
+    // ── Cross-tool dependency ─────────────────────────────────────────────────
+    @Query("SELECT t.toolName AS filedAgainst, t.rootCauseTool AS rootCauseTool, COUNT(t) AS count FROM TicketEntity t WHERE t.rootCauseTool IS NOT NULL AND t.rootCauseTool != t.toolName GROUP BY t.toolName, t.rootCauseTool ORDER BY COUNT(t) DESC")
+    List<CrossToolProjection> crossToolDependencies();
+
+    // ── Knowledge gaps ────────────────────────────────────────────────────────
+    @Query("SELECT t FROM TicketEntity t WHERE t.knowledgeGapFlag = true ORDER BY t.toolName, t.category")
+    List<TicketEntity> findKnowledgeGapTickets();
+
+    @Query("SELECT t.knowledgeGapDescription AS description, t.toolName AS toolName, t.category AS category, COUNT(t) AS count FROM TicketEntity t WHERE t.knowledgeGapFlag = true AND t.knowledgeGapDescription IS NOT NULL GROUP BY t.knowledgeGapDescription, t.toolName, t.category ORDER BY COUNT(t) DESC")
+    List<KnowledgeGapProjection> knowledgeGapSummary();
+
+    // ── Projections ───────────────────────────────────────────────────────────
+    interface ToolCountProjection { String getToolName(); Long getCount(); }
+    interface CategoryCountProjection { String getCategory(); Long getCount(); }
+    interface SeverityCountProjection { String getSeverity(); Long getCount(); }
+    interface ToolCategoryCountProjection { String getToolName(); String getCategory(); Long getCount(); }
+    interface ResolutionTypeProjection { String getToolName(); String getResolutionType(); Long getCount(); }
+    interface ResolutionSummaryProjection { String getResolutionType(); Long getCount(); }
+    interface SentimentProjection { String getToolName(); Double getAvgSentiment(); Long getCount(); Long getFrustratedCount(); }
+    interface CrossToolProjection { String getFiledAgainst(); String getRootCauseTool(); Long getCount(); }
+    interface KnowledgeGapProjection { String getDescription(); String getToolName(); String getCategory(); Long getCount(); }
+
+    // ── Methods used by scheduled services ───────────────────────────────────
+
+    /** Used by EmergingIssueService — tickets created after a given date */
+    List<TicketEntity> findByCreatedDateAfter(java.time.LocalDate date);
+
+    /** Used by EmergingIssueService — fetch a single ticket by its Jira key */
+    java.util.Optional<TicketEntity> findByTicketId(String ticketId);
+
+    /** Used by KnowledgeGapService — all tickets flagged as knowledge gaps */
+    List<TicketEntity> findByKnowledgeGapFlagTrue();
 }

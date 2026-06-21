@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5003",
+    "fields": {
+      "summary": "Nexus cleanup policy deleting release artifacts that are still in production",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+      "labels": ["nexus", "cleanup-policy", "releases", "production"],
+      "created": "2025-10-28T09:00:00.000+0000",
+      "resolutiondate": "2025-10-29T11:00:00.000+0000",
+      "description": "Our production Kubernetes cluster failed to pull a Docker image during a pod restart because the image was deleted from Nexus by the automated cleanup policy. The image was version 2.4.1 of payment-service released 45 days ago and still running in production. The Nexus cleanup policy is configured to delete artifacts older than 30 days. This caused a production outage for 20 minutes while we redeployed with a newer image."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60020",
+        "author": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The 30-day cleanup policy is too aggressive for production images. We keep services running on versions released months ago especially for stable services that do not need frequent updates. Deleting images that are actively used in production is dangerous." }] }] },
+        "created": "2025-10-28T09:30:00.000+0000",
+        "updated": "2025-10-28T09:30:00.000+0000"
+      },
+      {
+        "id": "60021",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Immediate fix: restored payment-service 2.4.1 from backup. Updated cleanup policy for the docker-releases repository from 30 days to 180 days. Going forward the correct approach is: tag production images with a keep label in Nexus and configure cleanup policy to exclude tagged artifacts. I am implementing this label-based retention policy this week so production images are never auto-deleted regardless of age." }] }] },
+        "created": "2025-10-28T11:00:00.000+0000",
+        "updated": "2025-10-28T11:00:00.000+0000"
+      },
+      {
+        "id": "60022",
+        "author": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Image restored and production stable. The label-based retention is the right long-term solution. This cleanup policy change should be communicated to all teams using Nexus for Docker images." }] }] },
+        "created": "2025-10-29T10:50:00.000+0000",
+        "updated": "2025-10-29T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

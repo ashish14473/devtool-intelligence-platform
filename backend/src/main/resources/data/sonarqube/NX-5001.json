@@ -1,0 +1,35 @@
+{
+  "issue": {
+    "key": "NX-5001",
+    "fields": {
+      "summary": "Nexus repository returning 401 after service account password rotation",
+      "status": "Done",
+      "priority": "Critical",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Deepak Verma", "emailAddress": "deepak.verma@company.com" },
+      "labels": ["nexus", "access", "credentials", "password-rotation"],
+      "created": "2025-10-10T07:00:00.000+0000",
+      "resolutiondate": "2025-10-10T10:00:00.000+0000",
+      "description": "All Maven builds across 3 teams started failing at 7am with 401 Unauthorized when trying to download from Nexus. The Nexus service account nexus-reader password was rotated by IT last night as part of the quarterly credential rotation. The password in Maven settings.xml and in Jenkins credentials was not updated. This is the same pattern we have seen with SonarQube and GitLab tokens - credential rotation breaks CI pipelines because the rotation is not coordinated with the tooling team."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60001",
+        "author": { "displayName": "Deepak Verma", "emailAddress": "deepak.verma@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "This is the fourth service account expiry incident this quarter. SonarQube token in October, GitLab runner token also in October, Jenkins Nexus credentials in November, and now Nexus directly. All caused by the same 90-day rotation policy applied to CI service accounts. We need a company-level solution not individual ticket fixes." }] }] },
+        "created": "2025-10-10T07:30:00.000+0000",
+        "updated": "2025-10-10T07:30:00.000+0000"
+      },
+      {
+        "id": "60002",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Updated nexus-reader password in Maven settings.xml and Jenkins credentials. All builds passing. Deepak is right - this is a systemic problem. Root cause: the 90-day password rotation policy is designed for human accounts not machine service accounts. This has caused 4 separate CI outages this quarter. Raising a cross-team initiative to implement either no-expiry service accounts or automated credential rotation using Vault." }] }] },
+        "created": "2025-10-10T09:50:00.000+0000",
+        "updated": "2025-10-10T09:50:00.000+0000"
+      }
+    ],
+    "total": 2
+  }
+}

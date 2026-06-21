@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "NX-5006",
+    "fields": {
+      "summary": "How to publish internal Maven library to Nexus releases repository",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+      "reporter": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+      "labels": ["nexus", "onboarding", "maven", "publish"],
+      "created": "2025-11-16T10:00:00.000+0000",
+      "resolutiondate": "2025-11-18T12:00:00.000+0000",
+      "description": "Our team has built a shared utilities library common-utils that we want to publish to Nexus so other teams can use it as a Maven dependency. We know how to pull dependencies from Nexus but we do not know how to publish to it. We need to know how to configure our pom.xml distributionManagement, what credentials to use, and whether we need special permissions to push to the releases repository."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "60050",
+        "author": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Our library groupId is com.company.shared and we want to publish version 1.0.0 to maven-releases. We have developer-level Nexus access but not sure if that includes publish rights." }] }] },
+        "created": "2025-11-16T10:30:00.000+0000",
+        "updated": "2025-11-16T10:30:00.000+0000"
+      },
+      {
+        "id": "60051",
+        "author": { "displayName": "Vijay Krishnan", "emailAddress": "vijay.krishnan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Developer role only allows read. I have granted your team the publisher role which allows push to maven-releases and maven-snapshots. Add distributionManagement to your pom.xml pointing to nexus.company.com/repository/maven-releases for releases and maven-snapshots for SNAPSHOT versions. Add your Nexus credentials to Maven settings.xml under server id nexus-releases. Run mvn deploy to publish. Use maven-snapshots for development versions and maven-releases only for stable tagged releases." }] }] },
+        "created": "2025-11-17T09:00:00.000+0000",
+        "updated": "2025-11-17T09:00:00.000+0000"
+      },
+      {
+        "id": "60052",
+        "author": { "displayName": "Arjun Menon", "emailAddress": "arjun.menon@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Published common-utils 1.0.0 to maven-releases successfully. Other teams can now add it as a dependency. The process was straightforward once we had the publisher role. This should be in the Nexus onboarding documentation." }] }] },
+        "created": "2025-11-18T11:50:00.000+0000",
+        "updated": "2025-11-18T11:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

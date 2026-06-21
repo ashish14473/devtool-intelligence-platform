@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4002",
+    "fields": {
+      "summary": "Confluence Jira macro not rendering - showing error on all pages using it",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Vikram Nair", "emailAddress": "vikram.nair@company.com" },
+      "labels": ["confluence", "macro", "jira-integration"],
+      "created": "2025-10-15T10:00:00.000+0000",
+      "resolutiondate": "2025-10-17T11:00:00.000+0000",
+      "description": "The Jira Issues macro on our sprint planning pages stopped rendering yesterday. All pages that embed Jira issue lists now show: Failed to load Jira issues. The Jira integration was working fine until a Confluence admin changed some settings. We use this macro across 40 sprint planning pages and it is blocking our planning process."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50010",
+        "author": { "displayName": "Vikram Nair", "emailAddress": "vikram.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The macro error says: App link to Jira is not configured or has expired. Our Confluence admin mentioned they updated the Jira application link recently as part of a URL change." }] }] },
+        "created": "2025-10-15T10:30:00.000+0000",
+        "updated": "2025-10-15T10:30:00.000+0000"
+      },
+      {
+        "id": "50011",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The Jira application link in Confluence needs to be re-authenticated after the Jira URL change. Go to Confluence Settings > Application Links > find the Jira link > click Edit > re-enter the Jira base URL and re-authenticate with admin credentials. The OAuth token between Confluence and Jira expired when the URL changed." }] }] },
+        "created": "2025-10-16T09:00:00.000+0000",
+        "updated": "2025-10-16T09:00:00.000+0000"
+      },
+      {
+        "id": "50012",
+        "author": { "displayName": "Vikram Nair", "emailAddress": "vikram.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Re-authenticated the application link. All Jira macros are now rendering correctly across all 40 pages. For future reference: any Jira URL change requires re-authentication of the Confluence-Jira application link." }] }] },
+        "created": "2025-10-17T10:50:00.000+0000",
+        "updated": "2025-10-17T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

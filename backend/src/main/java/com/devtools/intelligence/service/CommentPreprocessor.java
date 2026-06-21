@@ -33,7 +33,7 @@ public class CommentPreprocessor {
      * Extend this set as you discover new automation accounts in your org.
      */
     private static final Set<String> BOT_EMAIL_PATTERNS = Set.of(
-            "automation@", "jira-bot@", "jenkins@", "gitlab-bot@",
+            "automation@", "jira-bot@", "jenkins@", "gitlab-bot@", "nexus@", "confluence@",
             "noreply@", "no-reply@", "notify@", "bot@"
     );
 

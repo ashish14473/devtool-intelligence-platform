@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4007",
+    "fields": {
+      "summary": "How to create and manage Confluence templates for team documentation standards",
+      "status": "Done",
+      "priority": "Low",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+      "labels": ["confluence", "onboarding", "templates"],
+      "created": "2025-11-14T10:00:00.000+0000",
+      "resolutiondate": "2025-11-16T11:00:00.000+0000",
+      "description": "Our team wants to create standard page templates for our Confluence space so that all team members create documentation in a consistent format. We need templates for Architecture Decision Records, Runbooks, Post-Incident Reviews, and Service Documentation. We do not know how to create space-level templates, how to make them the default when creating a new page, and how to share them with other spaces."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50060",
+        "author": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "We want the templates to be available when someone clicks Create page within our space. We also want to know if we can promote our templates to the global company template library." }] }] },
+        "created": "2025-11-14T10:30:00.000+0000",
+        "updated": "2025-11-14T10:30:00.000+0000"
+      },
+      {
+        "id": "50061",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "To create space templates: Space Settings > Look and Feel > Templates > Create template. These appear when creating pages within your space. For global company templates: Contact the Confluence admin team with your template and we add it to the Company Templates category visible to all spaces. I can add your ADR and Post-Incident templates to the global library now if you share them - these would be useful for all teams." }] }] },
+        "created": "2025-11-15T09:00:00.000+0000",
+        "updated": "2025-11-15T09:00:00.000+0000"
+      },
+      {
+        "id": "50062",
+        "author": { "displayName": "Meera Iyer", "emailAddress": "meera.iyer@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Created all 4 templates in our space. Shared ADR and PIR templates to add to global library. Templates are now appearing in the Create page dialog. Very useful feature - more teams should know about this." }] }] },
+        "created": "2025-11-16T10:50:00.000+0000",
+        "updated": "2025-11-16T10:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

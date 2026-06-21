@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4005",
+    "fields": {
+      "summary": "Page migration from old Confluence space losing formatting and attachments",
+      "status": "Done",
+      "priority": "Medium",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+      "labels": ["confluence", "migration", "pages"],
+      "created": "2025-11-05T09:00:00.000+0000",
+      "resolutiondate": "2025-11-07T14:00:00.000+0000",
+      "description": "We are migrating 85 pages from our legacy LEGACY space to the new ENGINEERING space. When we use the Move Pages feature the page content transfers but all table formatting is broken and PDF attachments are not migrated. The pages have complex tables with coloured cells and merged rows that are being converted to plain text tables. This is breaking our technical specification documents."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50040",
+        "author": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The Move Pages feature seems to convert the old Confluence wiki markup tables to the new editor format but loses the styling. The PDF attachments are completely missing after migration. We have 85 pages to migrate and cannot reformat them all manually." }] }] },
+        "created": "2025-11-05T09:30:00.000+0000",
+        "updated": "2025-11-05T09:30:00.000+0000"
+      },
+      {
+        "id": "50041",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The Move Pages feature does not preserve all formatting when migrating between spaces that use different editor versions - your LEGACY space uses the old wiki editor and ENGINEERING uses the new editor. For attachments: use Confluence's Export/Import space feature instead of Move Pages - this preserves all attachments and is more reliable for bulk migrations. For the table formatting: I recommend using the Confluence Cloud Migration Assistant which handles editor conversion better than manual Move Pages for complex tables." }] }] },
+        "created": "2025-11-06T10:00:00.000+0000",
+        "updated": "2025-11-06T10:00:00.000+0000"
+      },
+      {
+        "id": "50042",
+        "author": { "displayName": "Suresh Pillai", "emailAddress": "suresh.pillai@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Used the Migration Assistant as suggested. Tables and attachments migrated correctly for 80 out of 85 pages. 5 pages with highly complex nested tables still need manual reformatting. Much better than doing all 85 manually. Recommend this approach for anyone doing space migrations." }] }] },
+        "created": "2025-11-07T13:50:00.000+0000",
+        "updated": "2025-11-07T13:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}

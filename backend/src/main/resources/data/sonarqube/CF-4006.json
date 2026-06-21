@@ -1,0 +1,42 @@
+{
+  "issue": {
+    "key": "CF-4006",
+    "fields": {
+      "summary": "Draw.io macro diagrams not displaying after Confluence update",
+      "status": "Done",
+      "priority": "High",
+      "assignee": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+      "reporter": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+      "labels": ["confluence", "macro", "drawio", "diagrams"],
+      "created": "2025-11-10T09:00:00.000+0000",
+      "resolutiondate": "2025-11-11T15:00:00.000+0000",
+      "description": "All our architecture diagrams embedded using the Draw.io macro stopped displaying after last week's Confluence update. The macro shows a loading spinner that never completes. We have over 200 architecture diagrams across our engineering spaces embedded via Draw.io. This is blocking our architecture review meetings as we cannot view any diagrams."
+    }
+  },
+  "comments": {
+    "comments": [
+      {
+        "id": "50050",
+        "author": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Checking browser console I see: Failed to load resource: net::ERR_BLOCKED_BY_CLIENT for the Draw.io iframe URL. This might be a CSP or CORS issue introduced by the Confluence update." }] }] },
+        "created": "2025-11-10T09:30:00.000+0000",
+        "updated": "2025-11-10T09:30:00.000+0000"
+      },
+      {
+        "id": "50051",
+        "author": { "displayName": "Lakshmi Nair", "emailAddress": "lakshmi.nair@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "The Confluence update changed the Content Security Policy which now blocks the Draw.io iframe from loading external content. The Draw.io app needs to be re-approved in Confluence Settings > Manage Apps > Draw.io > Trust App. Atlassian support confirmed this is a known issue with the latest Confluence Cloud update affecting all marketplace apps using iframes. Re-approving the app under trusted domains resolves it immediately." }] }] },
+        "created": "2025-11-11T10:00:00.000+0000",
+        "updated": "2025-11-11T10:00:00.000+0000"
+      },
+      {
+        "id": "50052",
+        "author": { "displayName": "Kavitha Rajan", "emailAddress": "kavitha.rajan@company.com" },
+        "body": { "type": "doc", "version": 1, "content": [{ "type": "paragraph", "content": [{ "type": "text", "text": "Re-approved Draw.io. All diagrams loading correctly now. 200+ diagrams back. Atlassian should communicate these breaking changes before rolling out updates." }] }] },
+        "created": "2025-11-11T14:50:00.000+0000",
+        "updated": "2025-11-11T14:50:00.000+0000"
+      }
+    ],
+    "total": 3
+  }
+}
