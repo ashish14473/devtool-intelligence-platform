@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Tools Intelligence Platform</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<style>
+/* ── Base ────────────────────────────────────────────────────────────────── */
+:root {
+  --navy:       #0D1B3E;
+  --navy2:      #1E2761;
+  --teal:       #0D9488;
+  --teal-l:     #14B8A6;
+  --teal-pale:  #CCFBF1;
+  --coral:      #EF4444;
+  --amber:      #F59E0B;
+  --purple:     #7C3AED;
+  --indigo:     #4F46E5;
+  --green:      #10B981;
+  --slate:      #64748B;
+  --slate-l:    #94A3B8;
+  --white:      #FFFFFF;
+  --off:        #F0F6FF;
+}
+
+.reveal { font-family: 'Calibri', 'Segoe UI', sans-serif; }
+.reveal .slides section { padding: 0; }
+.reveal h1, .reveal h2, .reveal h3 { font-family: 'Calibri', 'Segoe UI', sans-serif; text-transform: none; letter-spacing: -0.01em; }
+
+/* ── Slide backgrounds ───────────────────────────────────────────────────── */
+.bg-navy    { background: var(--navy) !important; }
+.bg-navy2   { background: var(--navy2) !important; }
+.bg-teal    { background: var(--teal) !important; }
+.bg-off     { background: var(--off) !important; }
+.bg-white   { background: #fff !important; }
+
+/* ── Shared layout ───────────────────────────────────────────────────────── */
+.slide-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  padding: 48px 60px 40px;
+  box-sizing: border-box;
+}
+.eyebrow {
+  font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 12px; opacity: 0.7;
+}
+.top-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 5px;
+  background: var(--teal);
+}
+.top-bar.coral { background: var(--coral); }
+.top-bar.amber { background: var(--amber); }
+.top-bar.purple { background: var(--purple); }
+.top-bar.green { background: var(--green); }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.card.light {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.card.tinted {
+  background: rgba(13,148,136,0.08);
+  border: 1px solid rgba(13,148,136,0.25);
+}
+
+/* ── Pill / badge ────────────────────────────────────────────────────────── */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+}
+
+/* ── Grid helpers ────────────────────────────────────────────────────────── */
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* ── Fragment animations ─────────────────────────────────────────────────── */
+.reveal .fragment.fade-up { transform: translateY(24px); }
+
+/* ── Slide 1 – Title ─────────────────────────────────────────────────────── */
+#s1 .big-q {
+  font-size: 52px; font-weight: 700; color: #fff; line-height: 1.15;
+  margin: 0; flex: 1; display: flex; align-items: center;
+}
+#s1 .big-q span { color: var(--teal-l); }
+#s1 .sub {
+  font-size: 18px; color: var(--slate-l); margin-top: 0;
+  font-style: italic;
+}
+#s1 .source-row {
+  display: flex; gap: 14px; margin-top: 36px;
+}
+#s1 .src-pill {
+  padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 600;
+  border: 1.5px solid;
+}
+
+/* ── Slide 2 – The signals ───────────────────────────────────────────────── */
+#s2 .signal-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-top: 20px; flex: 1;
+}
+#s2 .sig-card {
+  border-radius: 14px; padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+#s2 .sig-icon { font-size: 26px; }
+#s2 .sig-title { font-size: 16px; font-weight: 700; }
+#s2 .sig-body { font-size: 13px; line-height: 1.55; opacity: 0.85; }
+#s2 .sig-example {
+  font-size: 11.5px; font-style: italic; opacity: 0.7;
+  border-top: 1px solid rgba(255,255,255,0.12); padding-top: 8px; margin-top: 4px;
+}
+
+/* ── Slide 3 – Insights for leadership ─────────────────────────────────── */
+#s3 .insight-row {
+  display: flex; gap: 14px; margin-top: 18px;
+}
+#s3 .ins-card {
+  flex: 1; border-radius: 12px; padding: 16px 18px;
+  border: 1px solid;
+}
+#s3 .ins-num {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+#s3 .ins-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+#s3 .ins-stat {
+  font-size: 22px; font-weight: 700; margin: 8px 0 4px;
+}
+#s3 .ins-label { font-size: 11px; opacity: 0.75; line-height: 1.4; }
+
+/* ── Slide 4 – Knowledge base ────────────────────────────────────────────── */
+#s4 .flow {
+  display: flex; align-items: center; gap: 0;
+  margin: 24px 0; flex: 0 0 auto;
+}
+#s4 .flow-box {
+  flex: 1; border-radius: 12px; padding: 16px;
+  text-align: center;
+}
+#s4 .flow-arrow {
+  font-size: 28px; color: var(--teal-l); flex: 0 0 40px; text-align: center;
+}
+#s4 .kb-benefits {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+  margin-top: 16px;
+}
+#s4 .kb-card {
+  border-radius: 12px; padding: 16px;
+}
+
+/* ── Slide 5 – The Agent ─────────────────────────────────────────────────── */
+#s5 .agent-flow {
+  display: flex; gap: 0; align-items: stretch;
+  margin-top: 20px; flex: 1;
+}
+#s5 .af-step {
+  flex: 1; border-radius: 14px; padding: 20px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+  position: relative;
+}
+#s5 .af-num {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; opacity: 0.6;
+}
+#s5 .af-icon { font-size: 28px; }
+#s5 .af-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
+#s5 .af-body { font-size: 12px; line-height: 1.6; opacity: 0.8; }
+#s5 .af-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; flex: 0 0 36px;
+  font-size: 22px; color: var(--teal-l);
+}
+#s5 .threshold-pill {
+  margin-top: auto;
+  background: rgba(13,148,136,0.15);
+  border: 1px solid rgba(13,148,136,0.4);
+  border-radius: 8px; padding: 8px 12px;
+  font-size: 11px; line-height: 1.5;
+}
+
+/* ── Slide 6 – Architecture ─────────────────────────────────────────────── */
+#s6 .arch {
+  flex: 1; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;
+}
+#s6 .arch-row {
+  display: flex; gap: 10px; align-items: center;
+}
+#s6 .arch-label {
+  width: 90px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--slate-l); text-align: right; flex: 0 0 90px;
+}
+#s6 .arch-boxes {
+  display: flex; gap: 10px; flex: 1;
+}
+#s6 .arch-box {
+  flex: 1; border-radius: 10px; padding: 10px 14px;
+  font-size: 12px; font-weight: 600; text-align: center;
+  border: 1px solid;
+}
+#s6 .arch-box small {
+  display: block; font-size: 10px; font-weight: 400; opacity: 0.75; margin-top: 2px;
+}
+#s6 .arch-down {
+  display: flex; justify-content: center; align-items: center;
+  height: 18px; color: var(--teal-l); font-size: 18px;
+}
+#s6 .tech-strip {
+  display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;
+}
+#s6 .tech-chip {
+  padding: 5px 14px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  color: var(--slate-l);
+}
+
+/* ── Slide 7 – Closing ───────────────────────────────────────────────────── */
+#s7 .big-line {
+  font-size: 40px; font-weight: 700; color: #fff; line-height: 1.2; flex: 1;
+  display: flex; flex-direction: column; justify-content: center;
+}
+#s7 .big-line span { color: var(--teal-l); }
+#s7 .output-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+  margin-top: 0;
+}
+#s7 .out-card {
+  border-radius: 12px; padding: 16px 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+}
+#s7 .out-icon { font-size: 22px; margin-bottom: 6px; }
+#s7 .out-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+#s7 .out-body { font-size: 11.5px; color: var(--slate-l); line-height: 1.55; }
+
+/* ── Nav hint ────────────────────────────────────────────────────────────── */
+.nav-hint {
+  position: fixed; bottom: 16px; right: 20px;
+  font-size: 11px; color: rgba(255,255,255,0.3);
+  pointer-events: none; z-index: 100;
+}
+
+/* ── Progress ────────────────────────────────────────────────────────────── */
+.reveal .progress { color: var(--teal-l); }
+.reveal .controls { color: var(--teal-l); }
+</style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — Title / Hook                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-navy" id="s1" data-transition="fade">
+  <div class="slide-inner">
+    <div class="top-bar"></div>
+
+    <div class="eyebrow" style="color:var(--teal-l)">Developer Tools Intelligence Platform</div>
+
+    <div class="big-q">
+      Every day, hundreds of queries flow<br>
+      across your tools.<br>
+      <span>They're telling you something.<br>Is anyone listening?</span>
+    </div>
+
+    <p class="sub">Jira · ServiceFirst · Microsoft Teams — three systems, thousands of signals, zero unified insight</p>
+
+    <div class="source-row">
+      <div class="src-pill" style="color:var(--indigo);border-color:var(--indigo);background:rgba(79,70,229,0.1)">
+        📋 Jira
+      </div>
+      <div class="src-pill" style="color:var(--coral);border-color:var(--coral);background:rgba(239,68,68,0.1)">
+        🔴 ServiceFirst
+      </div>
+      <div class="src-pill" style="color:var(--teal-l);border-color:var(--teal-l);background:rgba(20,184,166,0.1)">
+        💬 Microsoft Teams
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — The signals inside tickets                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-navy" id="s2" data-transition="slide">
+  <div class="slide-inner">
+    <div class="top-bar coral"></div>
+
+    <div class="eyebrow" style="color:var(--coral)">Act 1 — The signals</div>
+    <h2 style="font-size:30px;color:#fff;margin:0 0 4px">
+      Every query is a signal.<br>
+      <span style="color:var(--coral)">Most are never decoded.</span>
+    </h2>
+    <p style="font-size:13px;color:var(--slate-l);margin:0 0 4px">
+      The text inside tickets and messages tells you far more than the status field ever could.
+    </p>
+
+    <div class="signal-grid">
+
+      <div class="sig-card fragment fade-up" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3)">
+        <div class="sig-icon">😤</div>
+        <div class="sig-title" style="color:var(--coral)">Developer frustration</div>
+        <div class="sig-body" style="color:#e2e8f0">
+          Comment threads reveal when a developer is frustrated, gave up, or was dissatisfied — even when the ticket is marked Done.
+        </div>
+        <div class="sig-example" style="color:var(--coral)">"This is the third time this month. When do we get a permanent fix?"</div>
+      </div>
+
+      <div class="sig-card fragment fade-up" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3)">
+        <div class="sig-icon">🔁</div>
+        <div class="sig-title" style="color:var(--amber)">Recurring issues hiding in plain sight</div>
+        <div class="sig-body" style="color:#e2e8f0">
+          The same token expiry broke SonarQube in October, Jenkins in November, and Nexus in December — filed as three separate incidents.
+        </div>
+        <div class="sig-example" style="color:var(--amber)">Same root cause. Different tool. Nobody joined the dots.</div>
+      </div>
+
+      <div class="sig-card fragment fade-up" style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3)">
+        <div class="sig-icon">📚</div>
+        <div class="sig-title" style="color:var(--purple)">Knowledge gaps</div>
+        <div class="sig-body" style="color:#e2e8f0">
+          Three different teams asked the same Jenkins onboarding question in three separate months. One documentation article would have prevented all three tickets.
+        </div>
+        <div class="sig-example" style="color:var(--purple)">It's not a support problem. It's a documentation problem.</div>
+      </div>
+
+      <div class="sig-card fragment fade-up" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3)">
+        <div class="sig-icon">✅</div>
+        <div class="sig-title" style="color:var(--green)">Resolution quality</div>
+        <div class="sig-body" style="color:#e2e8f0">
+          Jira says Done. But was it truly fixed, closed with a workaround, or just abandoned? The comment thread knows. The status field doesn't.
+        </div>
+        <div class="sig-example" style="color:var(--green)">30% of resolved tickets are actually workarounds that will return.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — Leadership insights from the signals                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-off" id="s3" data-transition="slide">
+  <div class="slide-inner">
+    <div class="top-bar amber"></div>
+
+    <div class="eyebrow" style="color:var(--amber)">Act 1 — What this means for leadership</div>
+    <h2 style="font-size:28px;color:var(--navy);margin:0 0 4px">
+      This data can give leadership insights<br>
+      <span style="color:var(--teal)">that Jira dashboards never could.</span>
+    </h2>
+    <p style="font-size:13px;color:var(--slate);margin:0 0 2px">
+      Not by counting tickets — by reading and understanding what's inside them.
+    </p>
+
+    <div class="insight-row" style="margin-top:14px">
+
+      <div class="ins-card fragment fade-up" style="background:#FEF2F2;border-color:#FECACA">
+        <div class="ins-num" style="color:var(--coral)">Insight 01</div>
+        <div class="ins-title" style="color:#991B1B">Hidden recurring problems</div>
+        <div class="ins-stat" style="color:var(--coral)">4 tools</div>
+        <div class="ins-label" style="color:#7F1D1D">All broken by the same credential policy.<br>Fix it once — resolve it everywhere.</div>
+      </div>
+
+      <div class="ins-card fragment fade-up" style="background:#FFFBEB;border-color:#FDE68A">
+        <div class="ins-num" style="color:var(--amber)">Insight 02</div>
+        <div class="ins-title" style="color:#92400E">Resolution quality score</div>
+        <div class="ins-stat" style="color:var(--amber)">30%</div>
+        <div class="ins-label" style="color:#78350F">Of closed tickets are workarounds.<br>Those problems will return as new tickets.</div>
+      </div>
+
+      <div class="ins-card fragment fade-up" style="background:#F5F3FF;border-color:#DDD6FE">
+        <div class="ins-num" style="color:var(--purple)">Insight 03</div>
+        <div class="ins-title" style="color:#4C1D95">Documentation debt</div>
+        <div class="ins-stat" style="color:var(--purple)">40%</div>
+        <div class="ins-label" style="color:#3B0764">Of onboarding tickets are repeat questions.<br>Preventable with one article each.</div>
+      </div>
+
+      <div class="ins-card fragment fade-up" style="background:#F0FDF9;border-color:#A7F3D0">
+        <div class="ins-num" style="color:var(--green)">Insight 04</div>
+        <div class="ins-title" style="color:#065F46">True frustration rate</div>
+        <div class="ins-stat" style="color:var(--green)">12%</div>
+        <div class="ins-label" style="color:#064E3B">Of Done tickets show frustration signals.<br>Masking unresolved problems under closed status.</div>
+      </div>
+
+      <div class="ins-card fragment fade-up" style="background:#EFF6FF;border-color:#BFDBFE">
+        <div class="ins-num" style="color:var(--indigo)">Insight 05</div>
+        <div class="ins-title" style="color:#1E3A8A">True business impact</div>
+        <div class="ins-stat" style="color:var(--indigo)">14</div>
+        <div class="ins-label" style="color:#1E3A8A">Tickets marked Medium are actually<br>blocking deployments. Under-prioritised.</div>
+      </div>
+
+      <div class="ins-card fragment fade-up" style="background:#FFF7ED;border-color:#FED7AA">
+        <div class="ins-num" style="color:#EA580C">Insight 06</div>
+        <div class="ins-title" style="color:#9A3412">Emerging patterns</div>
+        <div class="ins-stat" style="color:#EA580C">7 days</div>
+        <div class="ins-label" style="color:#7C2D12">New patterns detected before they<br>become volume spikes. Act early.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — Resolved tickets as knowledge base                            -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-navy" id="s4" data-transition="slide">
+  <div class="slide-inner">
+    <div class="top-bar" style="background:var(--teal)"></div>
+
+    <div class="eyebrow" style="color:var(--teal-l)">Act 2 — The knowledge base</div>
+    <h2 style="font-size:30px;color:#fff;margin:0 0 4px">
+      Every resolved ticket is an answer<br>
+      <span style="color:var(--teal-l)">waiting to help the next developer.</span>
+    </h2>
+    <p style="font-size:13px;color:var(--slate-l);margin:0 0 8px">
+      Instead of letting resolutions disappear into closed tickets, we turn them into a living, searchable knowledge base.
+    </p>
+
+    <div class="flow fragment fade-up">
+      <div class="flow-box" style="background:rgba(79,70,229,0.15);border:1px solid rgba(79,70,229,0.35)">
+        <div style="font-size:22px">📋</div>
+        <div style="font-size:13px;font-weight:700;color:#a5b4fc;margin-top:6px">Resolved ticket</div>
+        <div style="font-size:11px;color:var(--slate-l);margin-top:4px">From Jira, ServiceFirst<br>or Teams</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:rgba(13,148,136,0.15);border:1px solid rgba(13,148,136,0.35)">
+        <div style="font-size:22px">🤖</div>
+        <div style="font-size:13px;font-weight:700;color:var(--teal-l);margin-top:6px">AI enrichment</div>
+        <div style="font-size:11px;color:var(--slate-l);margin-top:4px">Classify · Summarise<br>Score · Embed</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35)">
+        <div style="font-size:22px">🗄️</div>
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-top:6px">Knowledge base</div>
+        <div style="font-size:11px;color:var(--slate-l);margin-top:4px">Searchable by meaning<br>not just keywords</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.35)">
+        <div style="font-size:22px">💡</div>
+        <div style="font-size:13px;font-weight:700;color:#c4b5fd;margin-top:6px">Instant answers</div>
+        <div style="font-size:11px;color:var(--slate-l);margin-top:4px">Grounded in real<br>resolved tickets</div>
+      </div>
+    </div>
+
+    <div class="kb-benefits">
+
+      <div class="kb-card fragment fade-up" style="background:rgba(13,148,136,0.1);border:1px solid rgba(13,148,136,0.25)">
+        <div style="font-size:20px;margin-bottom:8px">🔍</div>
+        <div style="font-size:14px;font-weight:700;color:var(--teal-l);margin-bottom:6px">For support engineers</div>
+        <div style="font-size:12px;color:var(--slate-l);line-height:1.6">
+          Ask a plain-language question. Get an answer cited from real past tickets — not from general AI knowledge. "How was this type of Jenkins failure resolved last time?"
+        </div>
+      </div>
+
+      <div class="kb-card fragment fade-up" style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25)">
+        <div style="font-size:20px;margin-bottom:8px">⚡</div>
+        <div style="font-size:14px;font-weight:700;color:#c4b5fd;margin-bottom:6px">Faster resolution</div>
+        <div style="font-size:12px;color:var(--slate-l);line-height:1.6">
+          New tickets get matched to similar resolved ones instantly. The support engineer sees the exact steps that fixed it last time — not a keyword search result.
+        </div>
+      </div>
+
+      <div class="kb-card fragment fade-up" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25)">
+        <div style="font-size:20px;margin-bottom:8px">📈</div>
+        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:6px">Gets better over time</div>
+        <div style="font-size:12px;color:var(--slate-l);line-height:1.6">
+          Every resolved ticket makes the knowledge base richer. As your ticket volume grows, the accuracy and coverage of answers improves automatically.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — The agent                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-navy" id="s5" data-transition="slide">
+  <div class="slide-inner">
+    <div class="top-bar purple"></div>
+
+    <div class="eyebrow" style="color:#c4b5fd">Act 3 — The agent</div>
+    <h2 style="font-size:30px;color:#fff;margin:0 0 4px">
+      The knowledge base powers an agent that<br>
+      <span style="color:#c4b5fd">answers queries before support even sees them.</span>
+    </h2>
+    <p style="font-size:13px;color:var(--slate-l);margin:0 0 8px">
+      When a new Jira ticket or Teams query arrives, the agent searches the knowledge base and posts an answer automatically — if it's confident enough.
+    </p>
+
+    <div class="agent-flow">
+
+      <div class="af-step fragment fade-up" style="background:rgba(79,70,229,0.12);border:1px solid rgba(79,70,229,0.3)">
+        <div class="af-num" style="color:#a5b4fc">Step 01</div>
+        <div class="af-icon">📬</div>
+        <div class="af-title" style="color:#a5b4fc">New ticket arrives</div>
+        <div class="af-body" style="color:var(--slate-l)">
+          Developer raises a ticket in Jira or asks a question in a Teams channel. The agent is watching in real time via webhook.
+        </div>
+      </div>
+
+      <div class="af-arrow fragment">→</div>
+
+      <div class="af-step fragment fade-up" style="background:rgba(13,148,136,0.12);border:1px solid rgba(13,148,136,0.3)">
+        <div class="af-num" style="color:var(--teal-l)">Step 02</div>
+        <div class="af-icon">🔎</div>
+        <div class="af-title" style="color:var(--teal-l)">Knowledge base search</div>
+        <div class="af-body" style="color:var(--slate-l)">
+          The query is embedded and compared against thousands of resolved tickets using semantic similarity — matching meaning, not just keywords.
+        </div>
+        <div class="threshold-pill" style="color:var(--teal-l)">
+          <strong>Similarity threshold</strong><br>
+          Only responds when match confidence &gt; 75%. Below that — stays silent and lets the support team handle it.
+        </div>
+      </div>
+
+      <div class="af-arrow fragment">→</div>
+
+      <div class="af-step fragment fade-up" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3)">
+        <div class="af-num" style="color:var(--green)">Step 03</div>
+        <div class="af-icon">✍️</div>
+        <div class="af-title" style="color:var(--green)">AI generates answer</div>
+        <div class="af-body" style="color:var(--slate-l)">
+          The LLM writes a concise, grounded answer using only the retrieved tickets — never hallucinating. Sources are cited by ticket ID.
+        </div>
+      </div>
+
+      <div class="af-arrow fragment">→</div>
+
+      <div class="af-step fragment fade-up" style="background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.3)">
+        <div class="af-num" style="color:#c4b5fd">Step 04</div>
+        <div class="af-icon">💬</div>
+        <div class="af-title" style="color:#c4b5fd">Answer posted instantly</div>
+        <div class="af-body" style="color:var(--slate-l)">
+          The answer is posted as a comment on the Jira ticket or Teams thread — labelled as an AI suggestion, with the source tickets listed.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card tinted fragment" style="margin-top:14px;padding:12px 18px;display:flex;gap:20px;align-items:center;border-radius:10px">
+      <div style="font-size:22px">🤝</div>
+      <div style="font-size:12.5px;color:var(--teal-l);line-height:1.6">
+        <strong>For the support engineer:</strong> The agent is your assistant — not your replacement. It handles the repeat questions so you can focus on the genuinely hard ones.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 — Architecture / Technical                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-navy" id="s6" data-transition="slide">
+  <div class="slide-inner">
+    <div class="top-bar" style="background:var(--indigo)"></div>
+
+    <div class="eyebrow" style="color:#a5b4fc">Technical architecture</div>
+    <h2 style="font-size:26px;color:#fff;margin:0 0 4px">
+      How it all connects
+    </h2>
+    <p style="font-size:12px;color:var(--slate-l);margin:0">
+      Three data sources. One AI pipeline. Dual storage. Four outputs.
+    </p>
+
+    <div class="arch">
+
+      <!-- Sources -->
+      <div class="arch-row fragment fade-up">
+        <div class="arch-label">Sources</div>
+        <div class="arch-boxes">
+          <div class="arch-box" style="background:rgba(79,70,229,0.12);border-color:rgba(79,70,229,0.4);color:#a5b4fc">
+            Jira <small>Issues + Comments</small>
+          </div>
+          <div class="arch-box" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.4);color:#fca5a5">
+            ServiceFirst <small>Incidents + SLA</small>
+          </div>
+          <div class="arch-box" style="background:rgba(20,184,166,0.12);border-color:rgba(20,184,166,0.4);color:var(--teal-l)">
+            Microsoft Teams <small>Channel messages</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-down fragment">↓</div>
+
+      <!-- AI Pipeline -->
+      <div class="arch-row fragment fade-up">
+        <div class="arch-label">AI pipeline</div>
+        <div class="arch-boxes">
+          <div class="arch-box" style="background:rgba(13,148,136,0.15);border-color:rgba(13,148,136,0.5);color:var(--teal-l);flex:2">
+            AI enrichment engine
+            <small>Classify · Summarise · Score sentiment · Detect gaps · Embed — OpenAI gpt-4o-mini · text-embedding-3-small</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-down fragment">↓</div>
+
+      <!-- Storage -->
+      <div class="arch-row fragment fade-up">
+        <div class="arch-label">Storage</div>
+        <div class="arch-boxes">
+          <div class="arch-box" style="background:rgba(79,70,229,0.12);border-color:rgba(79,70,229,0.4);color:#a5b4fc">
+            PostgreSQL <small>Structured store · analytics</small>
+          </div>
+          <div class="arch-box" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4);color:var(--green)">
+            pgvector <small>1536-dim embeddings · HNSW index</small>
+          </div>
+          <div class="arch-box" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.4);color:var(--amber)">
+            Analytics tables <small>Clusters · gaps · emerging issues</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-down fragment">↓</div>
+
+      <!-- Outputs -->
+      <div class="arch-row fragment fade-up">
+        <div class="arch-label">Outputs</div>
+        <div class="arch-boxes">
+          <div class="arch-box" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.4);color:var(--amber)">
+            Leadership dashboard <small>AI analytics + insights</small>
+          </div>
+          <div class="arch-box" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.4);color:var(--green)">
+            Support chat <small>RAG knowledge search</small>
+          </div>
+          <div class="arch-box" style="background:rgba(124,58,237,0.12);border-color:rgba(124,58,237,0.4);color:#c4b5fd">
+            Live agent <small>Auto-answers Jira + Teams</small>
+          </div>
+          <div class="arch-box" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.4);color:#fca5a5">
+            Weekly digest <small>Trend alerts to leadership</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tech-strip fragment fade-up" style="margin-top:10px">
+      <span class="tech-chip">Spring Boot 3.3</span>
+      <span class="tech-chip">Java 21</span>
+      <span class="tech-chip">OpenAI gpt-4o-mini</span>
+      <span class="tech-chip">PostgreSQL 16 + pgvector</span>
+      <span class="tech-chip">React 19 + Recharts</span>
+      <span class="tech-chip">Docker</span>
+      <span class="tech-chip" style="color:var(--teal-l);border-color:rgba(20,184,166,0.4)">PoC running today · 55 tickets indexed</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 — Closing                                                       -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="bg-teal" id="s7" data-transition="fade">
+  <div class="slide-inner">
+
+    <div class="eyebrow" style="color:rgba(255,255,255,0.65)">The bottom line</div>
+
+    <div class="big-line">
+      Your tools are already<br>generating the answers.<br>
+      <span>We built the system<br>to surface them.</span>
+    </div>
+
+    <div class="output-grid">
+      <div class="out-card fragment fade-up">
+        <div class="out-icon">📊</div>
+        <div class="out-title">Leadership gets</div>
+        <div class="out-body">AI-derived insights across all tools — frustration rates, recurring patterns, documentation debt, real business impact.</div>
+      </div>
+      <div class="out-card fragment fade-up">
+        <div class="out-icon">🛠️</div>
+        <div class="out-title">Support engineers get</div>
+        <div class="out-body">A knowledge base assistant that searches thousands of resolved tickets instantly — and an agent that handles the repeat questions.</div>
+      </div>
+      <div class="out-card fragment fade-up">
+        <div class="out-icon">🚀</div>
+        <div class="out-title">Developers get</div>
+        <div class="out-body">Answers on their Jira ticket before support has even looked at it. Faster resolution. Less waiting. More shipping.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<div class="nav-hint">← → to navigate · Space to advance</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  transitionSpeed: 'default',
+  backgroundTransition: 'fade',
+  center: false,
+  width: 1280,
+  height: 720,
+  margin: 0,
+  minScale: 0.4,
+  maxScale: 2.0,
+  controls: true,
+  controlsTutorial: false,
+  progress: true,
+  slideNumber: 'c/t',
+  keyboard: true,
+  touch: true,
+  fragments: true,
+  fragmentInURL: false,
+  autoPlayMedia: false,
+});
+</script>
+</body>
+</html>
